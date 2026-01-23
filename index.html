@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Menu Planner">
+  <meta name="theme-color" content="#2d6a4f">
+  <meta name="description" content="Planificateur de menus familiaux - Generez vos menus et listes de courses">
+  
+  <!-- Icone pour iPhone -->
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%232d6a4f' width='100' height='100' rx='20'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='white'>🍽</text></svg>">
+  
+  <title>Planificateur de Menus Familiaux</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1>Planificateur de Menus</h1>
+      <p class="subtitle">Planifiez vos repas et générez votre liste de courses</p>
+    </header>
+
+    <!-- Navigation par étapes -->
+    <nav class="steps">
+      <button class="step active" data-step="1">
+        <span class="step-number">1</span>
+        <span class="step-label">Configuration</span>
+      </button>
+      <button class="step" data-step="2">
+        <span class="step-number">2</span>
+        <span class="step-label">Menu</span>
+      </button>
+      <button class="step" data-step="3">
+        <span class="step-number">3</span>
+        <span class="step-label">Courses</span>
+      </button>
+      <button class="step" data-step="4">
+        <span class="step-number">4</span>
+        <span class="step-label">Préparation</span>
+      </button>
+    </nav>
+
+    <!-- Étape 1: Configuration -->
+    <section id="step1" class="step-content active">
+      <div class="card">
+        <h2>Configuration de la famille</h2>
+        
+        <div class="form-group">
+          <label for="nbPersonnes">Nombre de personnes</label>
+          <div class="input-with-buttons">
+            <button type="button" class="btn-qty" onclick="adjustQty('nbPersonnes', -1)">-</button>
+            <input type="number" id="nbPersonnes" value="4" min="1" max="12">
+            <button type="button" class="btn-qty" onclick="adjustQty('nbPersonnes', 1)">+</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="nbJours">Nombre de jours à planifier</label>
+          <div class="input-with-buttons">
+            <button type="button" class="btn-qty" onclick="adjustQty('nbJours', -1)">-</button>
+            <input type="number" id="nbJours" value="7" min="1" max="14">
+            <button type="button" class="btn-qty" onclick="adjustQty('nbJours', 1)">+</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Types de repas à planifier</label>
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="petitDejeuner" checked>
+              <span>Petit-déjeuner</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="dejeuner" checked>
+              <span>Déjeuner</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="diner" checked>
+              <span>Dîner</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Budget</h2>
+        <div class="form-group">
+          <label>Niveau de budget</label>
+          <div class="budget-options">
+            <label class="budget-option">
+              <input type="radio" name="budget" value="1">
+              <span class="budget-card">
+                <span class="budget-icon">$</span>
+                <span class="budget-label">Économique</span>
+              </span>
+            </label>
+            <label class="budget-option">
+              <input type="radio" name="budget" value="2" checked>
+              <span class="budget-card">
+                <span class="budget-icon">$$</span>
+                <span class="budget-label">Moyen</span>
+              </span>
+            </label>
+            <label class="budget-option">
+              <input type="radio" name="budget" value="3">
+              <span class="budget-card">
+                <span class="budget-icon">$$$</span>
+                <span class="budget-label">Premium</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Préférences alimentaires</h2>
+        <p class="card-description">Adaptez les recettes à vos goûts et besoins</p>
+        
+        <div class="form-group">
+          <label>Type de petit-déjeuner</label>
+          <div class="preference-options">
+            <label class="preference-option">
+              <input type="radio" name="pdejType" value="all" checked>
+              <span class="pref-card">
+                <span class="pref-icon">🍽️</span>
+                <span class="pref-label">Tous</span>
+                <span class="pref-desc">Sucré et salé</span>
+              </span>
+            </label>
+            <label class="preference-option">
+              <input type="radio" name="pdejType" value="proteine">
+              <span class="pref-card">
+                <span class="pref-icon">🥓</span>
+                <span class="pref-label">Protéiné</span>
+                <span class="pref-desc">Oeufs, viande, fromage</span>
+              </span>
+            </label>
+            <label class="preference-option">
+              <input type="radio" name="pdejType" value="sucre">
+              <span class="pref-card">
+                <span class="pref-icon">🥐</span>
+                <span class="pref-label">Sucré</span>
+                <span class="pref-desc">Classique français</span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Préférences générales</label>
+          <div class="checkbox-group-prefs">
+            <label class="checkbox-pref">
+              <input type="checkbox" id="prefLowSugar">
+              <span class="pref-check-card">
+                <span class="pref-check-icon">🚫🍬</span>
+                <span class="pref-check-text">
+                  <strong>Faible en sucre</strong>
+                  <small>Évite les recettes sucrées</small>
+                </span>
+              </span>
+            </label>
+            <label class="checkbox-pref">
+              <input type="checkbox" id="prefCopieux">
+              <span class="pref-check-card">
+                <span class="pref-check-icon">💪</span>
+                <span class="pref-check-text">
+                  <strong>Repas copieux</strong>
+                  <small>Privilégie les plats consistants</small>
+                </span>
+              </span>
+            </label>
+            <label class="checkbox-pref">
+              <input type="checkbox" id="prefRapide">
+              <span class="pref-check-card">
+                <span class="pref-check-icon">⚡</span>
+                <span class="pref-check-text">
+                  <strong>Recettes rapides</strong>
+                  <small>Moins de 20 min de préparation</small>
+                </span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Ingrédients à exclure</h2>
+        <p class="card-description">Sélectionnez les ingrédients que vous ne souhaitez pas dans vos recettes</p>
+        
+        <div class="form-group">
+          <label for="searchIngredient">Rechercher un ingrédient</label>
+          <input type="text" id="searchIngredient" placeholder="Tapez pour rechercher...">
+        </div>
+
+        <div class="excluded-tags" id="excludedTags">
+          <!-- Tags des ingrédients exclus -->
+        </div>
+
+        <div class="ingredients-list" id="ingredientsList">
+          <!-- Liste des ingrédients générée par JS -->
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary btn-large" onclick="generateMenu()">
+          Générer le menu
+        </button>
+      </div>
+    </section>
+
+    <!-- Étape 2: Menu généré -->
+    <section id="step2" class="step-content">
+      <div class="card">
+        <div class="card-header">
+          <h2>Votre menu de la semaine</h2>
+          <button class="btn btn-secondary btn-small" onclick="regenerateAll()">
+            Tout régénérer
+          </button>
+        </div>
+        
+        <div class="menu-grid" id="menuGrid">
+          <!-- Menu généré par JS -->
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-secondary" onclick="goToStep(1)">
+          Modifier les préférences
+        </button>
+        <button class="btn btn-primary" onclick="generateShoppingList()">
+          Voir la liste de courses
+        </button>
+      </div>
+    </section>
+
+    <!-- Étape 3: Liste de courses -->
+    <section id="step3" class="step-content">
+      <div class="card">
+        <div class="card-header">
+          <h2>Liste de courses</h2>
+          <div class="header-actions">
+            <button class="btn btn-secondary btn-small" onclick="printList()">
+              Imprimer
+            </button>
+            <button class="btn btn-secondary btn-small" onclick="copyList()">
+              Copier
+            </button>
+          </div>
+        </div>
+
+        <div class="shopping-summary" id="shoppingSummary">
+          <!-- Résumé généré par JS -->
+        </div>
+
+        <div class="shopping-list" id="shoppingList">
+          <!-- Liste générée par JS -->
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-secondary" onclick="goToStep(2)">
+          Retour au menu
+        </button>
+        <button class="btn btn-primary" onclick="goToPreparation()">
+          Voir les recettes
+        </button>
+      </div>
+    </section>
+
+    <!-- Étape 4: Préparation des recettes -->
+    <section id="step4" class="step-content">
+      <div class="card">
+        <div class="card-header">
+          <h2>Instructions de préparation</h2>
+          <div class="header-actions">
+            <button class="btn btn-secondary btn-small" onclick="printPreparation()">
+              Imprimer
+            </button>
+          </div>
+        </div>
+
+        <div class="day-filter" id="dayFilter">
+          <!-- Filtres par jour générés par JS -->
+        </div>
+
+        <div class="preparation-list" id="preparationList">
+          <!-- Liste des recettes avec étapes générée par JS -->
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-secondary" onclick="goToStep(3)">
+          Retour aux courses
+        </button>
+        <button class="btn btn-primary" onclick="savePreferences()">
+          Sauvegarder mes préférences
+        </button>
+      </div>
+    </section>
+
+    <!-- Modal pour afficher une recette -->
+    <div class="modal" id="recipeModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modalTitle">Titre de la recette</h3>
+          <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="modalBody">
+          <!-- Contenu de la recette -->
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" onclick="closeModal()">Fermer</button>
+          <button class="btn btn-primary" id="modalRegenerate">Changer de recette</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast pour les notifications -->
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <script src="recipes.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

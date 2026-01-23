@@ -1,0 +1,3341 @@
+// Base de données de recettes françaises
+// Chaque recette contient : nom, catégorie, budget, temps, tags, ingrédients (par personne)
+// Tags disponibles : "proteine", "low-sugar", "sucre", "vegetarien", "rapide", "copieux", "leger"
+
+const RECIPES = [
+  // =====================
+  // PETITS-DÉJEUNERS SUCRÉS (classiques)
+  // =====================
+  {
+    id: 1,
+    nom: "Tartines beurre et confiture",
+    categorie: "petit-dejeuner",
+    budget: 1,
+    tempsPreparation: 5,
+    tags: ["sucre", "rapide"],
+    ingredients: [
+      { nom: "Pain de mie", quantite: 2, unite: "tranches", rayon: "boulangerie" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Confiture", quantite: 30, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire griller les tranches de pain de mie au grille-pain ou à la poêle.",
+      "Tartiner généreusement de beurre pendant que le pain est encore chaud.",
+      "Ajouter la confiture par-dessus et servir immédiatement."
+    ]
+  },
+  {
+    id: 2,
+    nom: "Croissants et jus d'orange",
+    categorie: "petit-dejeuner",
+    budget: 2,
+    tempsPreparation: 5,
+    tags: ["sucre", "rapide"],
+    ingredients: [
+      { nom: "Croissants", quantite: 2, unite: "pièces", rayon: "boulangerie" },
+      { nom: "Jus d'orange", quantite: 200, unite: "ml", rayon: "boissons" }
+    ],
+    etapes: [
+      "Préchauffer le four à 180°C si les croissants ne sont pas frais du jour.",
+      "Réchauffer les croissants 3-4 minutes au four pour qu'ils soient croustillants.",
+      "Servir les croissants tièdes avec un verre de jus d'orange frais."
+    ]
+  },
+  {
+    id: 3,
+    nom: "Pain perdu",
+    categorie: "petit-dejeuner",
+    budget: 1,
+    tempsPreparation: 15,
+    tags: ["sucre", "proteine"],
+    ingredients: [
+      { nom: "Pain rassis", quantite: 2, unite: "tranches", rayon: "boulangerie" },
+      { nom: "Oeufs", quantite: 1, unite: "pièce", rayon: "produits-laitiers" },
+      { nom: "Lait", quantite: 100, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Sucre", quantite: 20, unite: "g", rayon: "epicerie" },
+      { nom: "Beurre", quantite: 10, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Battre les oeufs avec le lait et la moitié du sucre dans une assiette creuse.",
+      "Tremper les tranches de pain des deux côtés dans le mélange oeuf-lait.",
+      "Faire fondre le beurre dans une poêle à feu moyen.",
+      "Cuire les tranches 2-3 minutes de chaque côté jusqu'à ce qu'elles soient dorées.",
+      "Saupoudrer du reste de sucre et servir chaud."
+    ]
+  },
+  {
+    id: 4,
+    nom: "Porridge aux fruits",
+    categorie: "petit-dejeuner",
+    budget: 1,
+    tempsPreparation: 10,
+    tags: ["sucre", "leger"],
+    ingredients: [
+      { nom: "Flocons d'avoine", quantite: 50, unite: "g", rayon: "epicerie" },
+      { nom: "Lait", quantite: 200, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Banane", quantite: 0.5, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Miel", quantite: 15, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Verser les flocons d'avoine et le lait dans une casserole.",
+      "Porter à ébullition puis réduire le feu et laisser cuire 5 minutes en remuant.",
+      "Couper la banane en rondelles.",
+      "Verser le porridge dans un bol, ajouter les rondelles de banane.",
+      "Arroser de miel et servir tiède."
+    ]
+  },
+  {
+    id: 6,
+    nom: "Crêpes au sucre",
+    categorie: "petit-dejeuner",
+    budget: 1,
+    tempsPreparation: 25,
+    tags: ["sucre"],
+    ingredients: [
+      { nom: "Farine", quantite: 50, unite: "g", rayon: "epicerie" },
+      { nom: "Oeufs", quantite: 0.5, unite: "pièce", rayon: "produits-laitiers" },
+      { nom: "Lait", quantite: 125, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Sucre", quantite: 25, unite: "g", rayon: "epicerie" },
+      { nom: "Beurre", quantite: 10, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Mélanger la farine et une pincée de sel dans un saladier, faire un puits.",
+      "Ajouter l'oeuf battu et incorporer progressivement le lait en fouettant.",
+      "Laisser reposer la pâte 15 minutes si possible.",
+      "Faire fondre un peu de beurre dans une poêle chaude.",
+      "Verser une louche de pâte, faire cuire 1-2 min de chaque côté.",
+      "Saupoudrer de sucre, plier et servir chaud."
+    ]
+  },
+  {
+    id: 7,
+    nom: "Muesli au yaourt",
+    categorie: "petit-dejeuner",
+    budget: 2,
+    tempsPreparation: 5,
+    tags: ["sucre", "rapide", "leger"],
+    ingredients: [
+      { nom: "Muesli", quantite: 60, unite: "g", rayon: "epicerie" },
+      { nom: "Yaourt nature", quantite: 125, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Miel", quantite: 10, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Verser le yaourt nature dans un bol.",
+      "Ajouter le muesli par-dessus.",
+      "Arroser de miel selon votre goût et mélanger légèrement.",
+      "Servir immédiatement pour garder le croquant du muesli."
+    ]
+  },
+  {
+    id: 9,
+    nom: "Pancakes",
+    categorie: "petit-dejeuner",
+    budget: 1,
+    tempsPreparation: 20,
+    tags: ["sucre"],
+    ingredients: [
+      { nom: "Farine", quantite: 50, unite: "g", rayon: "epicerie" },
+      { nom: "Oeufs", quantite: 0.5, unite: "pièce", rayon: "produits-laitiers" },
+      { nom: "Lait", quantite: 75, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Levure chimique", quantite: 3, unite: "g", rayon: "epicerie" },
+      { nom: "Sirop d'érable", quantite: 30, unite: "ml", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Mélanger la farine et la levure chimique dans un saladier.",
+      "Ajouter l'oeuf battu et le lait, fouetter jusqu'à obtenir une pâte lisse.",
+      "Chauffer une poêle antiadhésive à feu moyen.",
+      "Verser des petits tas de pâte, cuire jusqu'à voir des bulles en surface.",
+      "Retourner et cuire 1 minute de l'autre côté.",
+      "Empiler les pancakes et arroser de sirop d'érable."
+    ]
+  },
+  {
+    id: 10,
+    nom: "Brioche et chocolat chaud",
+    categorie: "petit-dejeuner",
+    budget: 2,
+    tempsPreparation: 5,
+    tags: ["sucre", "rapide"],
+    ingredients: [
+      { nom: "Brioche", quantite: 2, unite: "tranches", rayon: "boulangerie" },
+      { nom: "Lait", quantite: 250, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Cacao en poudre", quantite: 15, unite: "g", rayon: "epicerie" },
+      { nom: "Sucre", quantite: 10, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire chauffer le lait dans une casserole sans le faire bouillir.",
+      "Ajouter le cacao en poudre et le sucre, fouetter vigoureusement.",
+      "Verser le chocolat chaud dans une tasse.",
+      "Servir avec les tranches de brioche pour tremper."
+    ]
+  },
+  {
+    id: 12,
+    nom: "Bol de fromage blanc aux fruits",
+    categorie: "petit-dejeuner",
+    budget: 2,
+    tempsPreparation: 5,
+    tags: ["sucre", "rapide", "leger", "proteine"],
+    ingredients: [
+      { nom: "Fromage blanc", quantite: 150, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Fraises", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Miel", quantite: 15, unite: "g", rayon: "epicerie" },
+      { nom: "Amandes effilées", quantite: 10, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Laver et équeuter les fraises, les couper en morceaux.",
+      "Verser le fromage blanc dans un bol.",
+      "Disposer les fraises sur le dessus.",
+      "Arroser de miel et parsemer d'amandes effilées.",
+      "Servir frais."
+    ]
+  },
+
+  // =====================
+  // PETITS-DÉJEUNERS SALÉS / PROTÉINÉS / LOW-SUGAR
+  // =====================
+  {
+    id: 5,
+    nom: "Oeufs brouillés sur toast",
+    categorie: "petit-dejeuner",
+    budget: 1,
+    tempsPreparation: 10,
+    tags: ["proteine", "low-sugar", "copieux", "rapide"],
+    ingredients: [
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Pain de mie", quantite: 2, unite: "tranches", rayon: "boulangerie" },
+      { nom: "Sel", quantite: 1, unite: "pincée", rayon: "epicerie" },
+      { nom: "Poivre", quantite: 1, unite: "pincée", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire griller les tranches de pain de mie.",
+      "Battre les oeufs avec le sel et le poivre.",
+      "Faire fondre le beurre dans une poêle à feu doux.",
+      "Verser les oeufs et remuer constamment avec une spatule.",
+      "Retirer du feu quand les oeufs sont encore crémeux.",
+      "Servir immédiatement sur les toasts."
+    ]
+  },
+  {
+    id: 8,
+    nom: "Tartine avocat et oeuf poché",
+    categorie: "petit-dejeuner",
+    budget: 2,
+    tempsPreparation: 10,
+    tags: ["proteine", "low-sugar", "copieux"],
+    ingredients: [
+      { nom: "Pain complet", quantite: 2, unite: "tranches", rayon: "boulangerie" },
+      { nom: "Avocat", quantite: 0.5, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Oeufs", quantite: 1, unite: "pièce", rayon: "produits-laitiers" },
+      { nom: "Sel", quantite: 1, unite: "pincée", rayon: "epicerie" },
+      { nom: "Poivre", quantite: 1, unite: "pincée", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire griller les tranches de pain complet.",
+      "Porter une casserole d'eau à frémissement avec un filet de vinaigre.",
+      "Écraser l'avocat à la fourchette, assaisonner de sel et poivre.",
+      "Créer un tourbillon dans l'eau et y glisser l'oeuf pour le pocher 3 min.",
+      "Tartiner les toasts d'avocat écrasé.",
+      "Déposer l'oeuf poché sur l'avocat et servir aussitôt."
+    ]
+  },
+  {
+    id: 11,
+    nom: "Omelette aux fines herbes",
+    categorie: "petit-dejeuner",
+    budget: 1,
+    tempsPreparation: 10,
+    tags: ["proteine", "low-sugar", "copieux", "rapide"],
+    ingredients: [
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 10, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Ciboulette", quantite: 5, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Persil", quantite: 5, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Pain", quantite: 2, unite: "tranches", rayon: "boulangerie" }
+    ],
+    etapes: [
+      "Ciseler finement la ciboulette et le persil.",
+      "Battre les oeufs avec les herbes, le sel et le poivre.",
+      "Faire fondre le beurre dans une poêle à feu moyen.",
+      "Verser les oeufs et cuire en ramenant les bords vers le centre.",
+      "Plier l'omelette quand elle est encore baveuse au centre.",
+      "Servir avec le pain."
+    ]
+  },
+  {
+    id: 71,
+    nom: "Oeufs au bacon",
+    categorie: "petit-dejeuner",
+    budget: 2,
+    tempsPreparation: 15,
+    tags: ["proteine", "low-sugar", "copieux"],
+    ingredients: [
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Bacon", quantite: 60, unite: "g", rayon: "viandes" },
+      { nom: "Pain de mie", quantite: 2, unite: "tranches", rayon: "boulangerie" },
+      { nom: "Beurre", quantite: 10, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Faire griller le bacon dans une poêle sans matière grasse jusqu'à ce qu'il soit croustillant.",
+      "Réserver le bacon et garder la graisse dans la poêle.",
+      "Casser les oeufs dans la poêle et cuire au plat 3-4 minutes.",
+      "Faire griller les tranches de pain et les beurrer.",
+      "Servir les oeufs avec le bacon et les toasts beurrés."
+    ]
+  },
+  {
+    id: 72,
+    nom: "English breakfast",
+    categorie: "petit-dejeuner",
+    budget: 3,
+    tempsPreparation: 25,
+    tags: ["proteine", "low-sugar", "copieux"],
+    ingredients: [
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Bacon", quantite: 50, unite: "g", rayon: "viandes" },
+      { nom: "Saucisses", quantite: 80, unite: "g", rayon: "viandes" },
+      { nom: "Champignons de Paris", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Tomates", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Haricots blancs (conserve)", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Pain de mie", quantite: 1, unite: "tranche", rayon: "boulangerie" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Faire cuire les saucisses à la poêle 10-12 minutes en les retournant.",
+      "Ajouter le bacon et le faire griller 3-4 minutes.",
+      "Dans une autre poêle, faire revenir les champignons émincés avec du beurre.",
+      "Couper les tomates en deux et les griller côté chair dans la poêle.",
+      "Réchauffer les haricots blancs dans une petite casserole.",
+      "Faire cuire les oeufs au plat dans la graisse du bacon.",
+      "Griller le pain et beurrer. Dresser tous les éléments dans une grande assiette."
+    ]
+  },
+  {
+    id: 73,
+    nom: "Omelette jambon-fromage",
+    categorie: "petit-dejeuner",
+    budget: 2,
+    tempsPreparation: 12,
+    tags: ["proteine", "low-sugar", "copieux", "rapide"],
+    ingredients: [
+      { nom: "Oeufs", quantite: 3, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Jambon blanc", quantite: 50, unite: "g", rayon: "viandes" },
+      { nom: "Gruyère râpé", quantite: 30, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Pain", quantite: 2, unite: "tranches", rayon: "boulangerie" }
+    ],
+    etapes: [
+      "Couper le jambon en petits dés.",
+      "Battre les oeufs avec sel et poivre.",
+      "Faire fondre le beurre dans une poêle à feu moyen.",
+      "Verser les oeufs, ajouter le jambon et le fromage râpé.",
+      "Cuire en ramenant les bords vers le centre.",
+      "Plier l'omelette et servir avec le pain."
+    ]
+  },
+  {
+    id: 74,
+    nom: "Croque-monsieur matinal",
+    categorie: "petit-dejeuner",
+    budget: 1,
+    tempsPreparation: 10,
+    tags: ["proteine", "low-sugar", "copieux", "rapide"],
+    ingredients: [
+      { nom: "Pain de mie", quantite: 2, unite: "tranches", rayon: "boulangerie" },
+      { nom: "Jambon blanc", quantite: 50, unite: "g", rayon: "viandes" },
+      { nom: "Gruyère râpé", quantite: 40, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Beurrer l'extérieur des deux tranches de pain.",
+      "Garnir l'intérieur de jambon et de fromage râpé.",
+      "Refermer le sandwich.",
+      "Cuire dans une poêle chaude 2-3 min de chaque côté jusqu'à ce que le fromage fonde.",
+      "Servir chaud et croustillant."
+    ]
+  },
+  {
+    id: 75,
+    nom: "Oeufs à la coque et mouillettes",
+    categorie: "petit-dejeuner",
+    budget: 1,
+    tempsPreparation: 8,
+    tags: ["proteine", "low-sugar", "rapide"],
+    ingredients: [
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Pain", quantite: 80, unite: "g", rayon: "boulangerie" },
+      { nom: "Beurre", quantite: 20, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Sel", quantite: 1, unite: "pincée", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Plonger les oeufs dans l'eau bouillante et cuire exactement 3 minutes.",
+      "Pendant ce temps, couper le pain en bâtonnets (mouillettes).",
+      "Beurrer généreusement les mouillettes.",
+      "Sortir les oeufs, les placer dans des coquetiers.",
+      "Décalotter le haut des oeufs, saler légèrement.",
+      "Tremper les mouillettes beurrées dans le jaune coulant."
+    ]
+  },
+  {
+    id: 76,
+    nom: "Tartine au saumon fumé",
+    categorie: "petit-dejeuner",
+    budget: 3,
+    tempsPreparation: 8,
+    tags: ["proteine", "low-sugar", "copieux", "rapide"],
+    ingredients: [
+      { nom: "Pain complet", quantite: 2, unite: "tranches", rayon: "boulangerie" },
+      { nom: "Saumon fumé", quantite: 60, unite: "g", rayon: "poissonnerie" },
+      { nom: "Fromage frais", quantite: 40, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Aneth", quantite: 2, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Citron", quantite: 0.25, unite: "pièce", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Faire griller légèrement les tranches de pain complet.",
+      "Tartiner généreusement de fromage frais.",
+      "Disposer les tranches de saumon fumé par-dessus.",
+      "Parsemer d'aneth ciselé.",
+      "Ajouter quelques gouttes de jus de citron et servir."
+    ]
+  },
+  {
+    id: 77,
+    nom: "Oeufs cocotte aux lardons",
+    categorie: "petit-dejeuner",
+    budget: 2,
+    tempsPreparation: 20,
+    tags: ["proteine", "low-sugar", "copieux"],
+    ingredients: [
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Lardons", quantite: 40, unite: "g", rayon: "viandes" },
+      { nom: "Crème fraîche", quantite: 30, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Gruyère râpé", quantite: 20, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Pain", quantite: 60, unite: "g", rayon: "boulangerie" }
+    ],
+    etapes: [
+      "Préchauffer le four à 180°C.",
+      "Faire revenir les lardons à la poêle sans matière grasse.",
+      "Répartir les lardons et la crème dans des ramequins beurrés.",
+      "Casser un oeuf par ramequin, parsemer de gruyère.",
+      "Enfourner 12-15 minutes selon la cuisson désirée.",
+      "Servir avec des mouillettes de pain."
+    ]
+  },
+  {
+    id: 78,
+    nom: "Assiette charcuterie-fromage",
+    categorie: "petit-dejeuner",
+    budget: 3,
+    tempsPreparation: 5,
+    tags: ["proteine", "low-sugar", "copieux", "rapide"],
+    ingredients: [
+      { nom: "Jambon sec", quantite: 40, unite: "g", rayon: "viandes" },
+      { nom: "Saucisson", quantite: 30, unite: "g", rayon: "viandes" },
+      { nom: "Comté", quantite: 40, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Pain de campagne", quantite: 80, unite: "g", rayon: "boulangerie" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Trancher le saucisson en rondelles fines.",
+      "Couper le comté en tranches ou en cubes.",
+      "Disposer joliment la charcuterie et le fromage dans une assiette.",
+      "Couper le pain de campagne en tranches.",
+      "Servir avec le beurre à température ambiante."
+    ]
+  },
+  {
+    id: 79,
+    nom: "Shakshuka (oeufs à la tomate)",
+    categorie: "petit-dejeuner",
+    budget: 1,
+    tempsPreparation: 20,
+    tags: ["proteine", "low-sugar", "copieux"],
+    ingredients: [
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Tomates pelées", quantite: 150, unite: "g", rayon: "epicerie" },
+      { nom: "Poivrons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Oignons", quantite: 40, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Cumin", quantite: 1, unite: "g", rayon: "epicerie" },
+      { nom: "Huile d'olive", quantite: 15, unite: "ml", rayon: "epicerie" },
+      { nom: "Pain", quantite: 60, unite: "g", rayon: "boulangerie" }
+    ],
+    etapes: [
+      "Émincer l'oignon et couper le poivron en dés.",
+      "Faire revenir l'oignon et le poivron dans l'huile d'olive 5 minutes.",
+      "Ajouter les tomates pelées et le cumin, laisser mijoter 5 minutes.",
+      "Former deux puits dans la sauce et y casser les oeufs.",
+      "Couvrir et cuire 5-7 minutes jusqu'à ce que les blancs soient pris.",
+      "Servir directement dans la poêle avec le pain pour saucer."
+    ]
+  },
+  {
+    id: 80,
+    nom: "Oeufs bénédicte",
+    categorie: "petit-dejeuner",
+    budget: 2,
+    tempsPreparation: 20,
+    tags: ["proteine", "low-sugar", "copieux"],
+    ingredients: [
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Jambon blanc", quantite: 50, unite: "g", rayon: "viandes" },
+      { nom: "Pain de mie", quantite: 2, unite: "tranches", rayon: "boulangerie" },
+      { nom: "Beurre", quantite: 40, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Vinaigre", quantite: 10, unite: "ml", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire fondre le beurre doucement pour préparer un beurre clarifié.",
+      "Porter de l'eau à frémissement avec le vinaigre.",
+      "Pocher les oeufs 3 minutes dans l'eau frémissante.",
+      "Faire griller les tranches de pain de mie.",
+      "Poêler rapidement le jambon.",
+      "Assembler : pain, jambon, oeuf poché, napper de beurre fondu."
+    ]
+  },
+  {
+    id: 81,
+    nom: "Galette complète (sarrasin)",
+    categorie: "petit-dejeuner",
+    budget: 2,
+    tempsPreparation: 20,
+    tags: ["proteine", "low-sugar", "copieux"],
+    ingredients: [
+      { nom: "Farine de sarrasin", quantite: 50, unite: "g", rayon: "epicerie" },
+      { nom: "Oeufs", quantite: 1, unite: "pièce", rayon: "produits-laitiers" },
+      { nom: "Jambon blanc", quantite: 50, unite: "g", rayon: "viandes" },
+      { nom: "Gruyère râpé", quantite: 30, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Mélanger la farine de sarrasin avec de l'eau et une pincée de sel pour faire la pâte.",
+      "Étaler finement la pâte dans une poêle beurrée chaude.",
+      "Cuire 2 minutes puis retourner.",
+      "Déposer le jambon et le fromage râpé au centre.",
+      "Casser l'oeuf sur la galette et replier les bords.",
+      "Couvrir 2 minutes pour que l'oeuf cuise et le fromage fonde."
+    ]
+  },
+  {
+    id: 82,
+    nom: "Tartines au fromage fondu",
+    categorie: "petit-dejeuner",
+    budget: 1,
+    tempsPreparation: 8,
+    tags: ["proteine", "low-sugar", "rapide"],
+    ingredients: [
+      { nom: "Pain de campagne", quantite: 100, unite: "g", rayon: "boulangerie" },
+      { nom: "Comté", quantite: 50, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 10, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Préchauffer le gril du four.",
+      "Couper le pain en tranches épaisses.",
+      "Beurrer légèrement les tranches.",
+      "Disposer des tranches de comté sur le pain.",
+      "Passer sous le gril 3-4 minutes jusqu'à ce que le fromage soit fondu et doré.",
+      "Servir immédiatement."
+    ]
+  },
+  {
+    id: 83,
+    nom: "Oeufs au plat sur rösti",
+    categorie: "petit-dejeuner",
+    budget: 1,
+    tempsPreparation: 25,
+    tags: ["proteine", "low-sugar", "copieux"],
+    ingredients: [
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Pommes de terre", quantite: 150, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Beurre", quantite: 20, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Sel", quantite: 2, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Râper les pommes de terre crues, les presser pour enlever l'eau.",
+      "Saler et mélanger.",
+      "Faire fondre le beurre dans une poêle à feu moyen.",
+      "Former une galette avec les pommes de terre, cuire 8-10 min de chaque côté.",
+      "Dans une autre poêle, cuire les oeufs au plat.",
+      "Servir les oeufs sur le rösti croustillant."
+    ]
+  },
+  {
+    id: 84,
+    nom: "Tartine rillettes",
+    categorie: "petit-dejeuner",
+    budget: 2,
+    tempsPreparation: 5,
+    tags: ["proteine", "low-sugar", "copieux", "rapide"],
+    ingredients: [
+      { nom: "Rillettes", quantite: 60, unite: "g", rayon: "viandes" },
+      { nom: "Pain de campagne", quantite: 100, unite: "g", rayon: "boulangerie" },
+      { nom: "Cornichons", quantite: 30, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Sortir les rillettes du réfrigérateur 10 minutes avant pour les ramollir.",
+      "Trancher le pain de campagne.",
+      "Tartiner généreusement de rillettes.",
+      "Couper les cornichons en rondelles.",
+      "Servir les tartines accompagnées de cornichons."
+    ]
+  },
+  {
+    id: 85,
+    nom: "Omelette au fromage de chèvre",
+    categorie: "petit-dejeuner",
+    budget: 2,
+    tempsPreparation: 12,
+    tags: ["proteine", "low-sugar", "copieux", "rapide"],
+    ingredients: [
+      { nom: "Oeufs", quantite: 3, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Fromage de chèvre", quantite: 40, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Pain", quantite: 60, unite: "g", rayon: "boulangerie" },
+      { nom: "Miel", quantite: 10, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Battre les oeufs avec sel et poivre.",
+      "Émietter le fromage de chèvre.",
+      "Faire fondre le beurre dans une poêle à feu moyen.",
+      "Verser les oeufs, ajouter le chèvre émietté.",
+      "Cuire en ramenant les bords vers le centre, plier.",
+      "Servir avec le pain et un filet de miel sur l'omelette."
+    ]
+  },
+  {
+    id: 86,
+    nom: "Oeuf au plat et avocat",
+    categorie: "petit-dejeuner",
+    budget: 2,
+    tempsPreparation: 10,
+    tags: ["proteine", "low-sugar", "copieux", "rapide"],
+    ingredients: [
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Avocat", quantite: 0.5, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Huile d'olive", quantite: 15, unite: "ml", rayon: "epicerie" },
+      { nom: "Pain complet", quantite: 2, unite: "tranches", rayon: "boulangerie" },
+      { nom: "Sel", quantite: 1, unite: "pincée", rayon: "epicerie" },
+      { nom: "Piment", quantite: 1, unite: "pincée", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire griller les tranches de pain complet.",
+      "Couper l'avocat en deux, retirer le noyau et trancher la chair.",
+      "Chauffer l'huile d'olive dans une poêle et cuire les oeufs au plat.",
+      "Disposer l'avocat sur les toasts, saler légèrement.",
+      "Déposer les oeufs au plat sur l'avocat.",
+      "Saupoudrer de piment et servir."
+    ]
+  },
+  {
+    id: 87,
+    nom: "Porridge salé aux oeufs",
+    categorie: "petit-dejeuner",
+    budget: 1,
+    tempsPreparation: 15,
+    tags: ["proteine", "low-sugar", "copieux"],
+    ingredients: [
+      { nom: "Flocons d'avoine", quantite: 50, unite: "g", rayon: "epicerie" },
+      { nom: "Bouillon de volaille", quantite: 200, unite: "ml", rayon: "epicerie" },
+      { nom: "Oeufs", quantite: 1, unite: "pièce", rayon: "produits-laitiers" },
+      { nom: "Parmesan", quantite: 15, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 10, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Porter le bouillon de volaille à ébullition.",
+      "Ajouter les flocons d'avoine, réduire le feu et cuire 5 minutes en remuant.",
+      "Incorporer le beurre et le parmesan râpé hors du feu.",
+      "Pendant ce temps, faire cuire l'oeuf au plat ou poché.",
+      "Verser le porridge dans un bol, déposer l'oeuf dessus.",
+      "Poivrer et servir chaud."
+    ]
+  },
+  {
+    id: 88,
+    nom: "Wrap bacon-oeuf-fromage",
+    categorie: "petit-dejeuner",
+    budget: 2,
+    tempsPreparation: 12,
+    tags: ["proteine", "low-sugar", "copieux", "rapide"],
+    ingredients: [
+      { nom: "Tortilla de blé", quantite: 1, unite: "pièce", rayon: "epicerie" },
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Bacon", quantite: 40, unite: "g", rayon: "viandes" },
+      { nom: "Gruyère râpé", quantite: 25, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 10, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Faire griller le bacon dans une poêle jusqu'à ce qu'il soit croustillant.",
+      "Battre les oeufs et les cuire en brouillés avec le beurre.",
+      "Chauffer légèrement la tortilla à la poêle.",
+      "Garnir le centre de la tortilla avec les oeufs brouillés.",
+      "Ajouter le bacon et le fromage râpé.",
+      "Rouler la tortilla en repliant les côtés et servir chaud."
+    ]
+  },
+
+  // =====================
+  // DÉJEUNERS/DÎNERS - VIANDES (18)
+  // =====================
+  {
+    id: 13,
+    nom: "Poulet rôti et pommes de terre",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 75,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Cuisses de poulet", quantite: 200, unite: "g", rayon: "viandes" },
+      { nom: "Pommes de terre", quantite: 200, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Ail", quantite: 1, unite: "gousse", rayon: "fruits-legumes" },
+      { nom: "Herbes de Provence", quantite: 2, unite: "g", rayon: "epicerie" },
+      { nom: "Huile d'olive", quantite: 15, unite: "ml", rayon: "epicerie" },
+      { nom: "Sel", quantite: 2, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Préchauffer le four à 200°C.",
+      "Éplucher et couper les pommes de terre en quartiers.",
+      "Disposer les cuisses de poulet dans un plat à four avec les pommes de terre.",
+      "Arroser d'huile d'olive, ajouter l'ail écrasé et les herbes de Provence.",
+      "Saler et enfourner pour 50-60 minutes en retournant à mi-cuisson.",
+      "Le poulet est prêt quand la peau est dorée et croustillante."
+    ]
+  },
+  {
+    id: 14,
+    nom: "Blanquette de veau",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 90,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Veau (épaule)", quantite: 180, unite: "g", rayon: "viandes" },
+      { nom: "Carottes", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Champignons de Paris", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Oignons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Crème fraîche", quantite: 50, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Bouillon de volaille", quantite: 200, unite: "ml", rayon: "epicerie" },
+      { nom: "Riz", quantite: 80, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Couper le veau en cubes et le faire blanchir 2 minutes dans l'eau bouillante.",
+      "Rincer la viande et la placer dans une cocotte avec le bouillon.",
+      "Ajouter les carottes en rondelles et l'oignon émincé, cuire 1h à feu doux.",
+      "Ajouter les champignons émincés, poursuivre la cuisson 20 minutes.",
+      "Incorporer la crème fraîche en fin de cuisson.",
+      "Faire cuire le riz à part et servir avec la blanquette."
+    ]
+  },
+  {
+    id: 15,
+    nom: "Boeuf bourguignon",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 180,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Boeuf (bourguignon)", quantite: 200, unite: "g", rayon: "viandes" },
+      { nom: "Lardons", quantite: 40, unite: "g", rayon: "viandes" },
+      { nom: "Carottes", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Oignons", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Champignons de Paris", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Vin rouge", quantite: 150, unite: "ml", rayon: "boissons" },
+      { nom: "Bouquet garni", quantite: 1, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Pommes de terre", quantite: 150, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Couper le boeuf en gros cubes et les faire dorer dans une cocotte avec de l'huile.",
+      "Réserver la viande, faire revenir les lardons et les oignons émincés.",
+      "Remettre la viande, ajouter les carottes en rondelles et le vin rouge.",
+      "Ajouter le bouquet garni, couvrir et laisser mijoter 2h30 à feu très doux.",
+      "Ajouter les champignons et les pommes de terre 30 minutes avant la fin.",
+      "Rectifier l'assaisonnement et servir bien chaud."
+    ]
+  },
+  {
+    id: 16,
+    nom: "Côtes de porc et haricots verts",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 30,
+    tags: ["rapide"],
+    ingredients: [
+      { nom: "Côtes de porc", quantite: 180, unite: "g", rayon: "viandes" },
+      { nom: "Haricots verts", quantite: 150, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Ail", quantite: 1, unite: "gousse", rayon: "fruits-legumes" },
+      { nom: "Huile", quantite: 10, unite: "ml", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire cuire les haricots verts 15-20 minutes dans l'eau bouillante salée.",
+      "Pendant ce temps, assaisonner les côtes de porc de sel et poivre.",
+      "Chauffer l'huile dans une poêle et cuire les côtes 5-6 min de chaque côté.",
+      "Égoutter les haricots, les faire sauter au beurre avec l'ail émincé.",
+      "Servir les côtes de porc avec les haricots verts persillés."
+    ]
+  },
+  {
+    id: 17,
+    nom: "Steak haché frites",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 30,
+    tags: ["copieux", "rapide"],
+    ingredients: [
+      { nom: "Steak haché", quantite: 150, unite: "g", rayon: "viandes" },
+      { nom: "Pommes de terre (frites)", quantite: 200, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Huile de friture", quantite: 30, unite: "ml", rayon: "epicerie" },
+      { nom: "Sel", quantite: 2, unite: "g", rayon: "epicerie" },
+      { nom: "Salade verte", quantite: 30, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Éplucher les pommes de terre et les couper en bâtonnets réguliers.",
+      "Les rincer et bien les sécher.",
+      "Faire chauffer l'huile et frire les frites 5-7 min jusqu'à ce qu'elles soient dorées.",
+      "Égoutter sur du papier absorbant et saler.",
+      "Cuire le steak haché à la poêle bien chaude selon la cuisson désirée.",
+      "Servir le steak avec les frites et la salade assaisonnée."
+    ]
+  },
+  {
+    id: 18,
+    nom: "Escalope de dinde à la crème",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 25,
+    tags: ["rapide"],
+    ingredients: [
+      { nom: "Escalope de dinde", quantite: 150, unite: "g", rayon: "viandes" },
+      { nom: "Crème fraîche", quantite: 50, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Champignons de Paris", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Échalotes", quantite: 30, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Riz", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Faire cuire le riz selon les instructions du paquet.",
+      "Émincer les échalotes et les champignons.",
+      "Faire dorer l'escalope de dinde au beurre 4-5 min de chaque côté, réserver.",
+      "Dans la même poêle, faire revenir les échalotes et les champignons.",
+      "Ajouter la crème fraîche, laisser réduire 2-3 minutes.",
+      "Remettre l'escalope dans la sauce et servir avec le riz."
+    ]
+  },
+  {
+    id: 19,
+    nom: "Saucisses lentilles",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 45,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Saucisses de Toulouse", quantite: 150, unite: "g", rayon: "viandes" },
+      { nom: "Lentilles vertes", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Carottes", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Oignons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Lardons", quantite: 30, unite: "g", rayon: "viandes" },
+      { nom: "Bouquet garni", quantite: 0.5, unite: "pièce", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Rincer les lentilles et les mettre dans une casserole avec le double d'eau froide.",
+      "Ajouter les carottes en rondelles, l'oignon piqué et le bouquet garni.",
+      "Porter à ébullition et cuire 25-30 minutes à feu doux.",
+      "Pendant ce temps, faire dorer les saucisses à la poêle avec les lardons.",
+      "Égoutter les lentilles, retirer le bouquet garni.",
+      "Servir les lentilles avec les saucisses et les lardons."
+    ]
+  },
+  {
+    id: 20,
+    nom: "Poulet basquaise",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 60,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Cuisses de poulet", quantite: 200, unite: "g", rayon: "viandes" },
+      { nom: "Poivrons", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Tomates", quantite: 150, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Oignons", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Jambon de Bayonne", quantite: 30, unite: "g", rayon: "viandes" },
+      { nom: "Riz", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Piment d'Espelette", quantite: 1, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire dorer les cuisses de poulet dans une cocotte avec un peu d'huile.",
+      "Réserver le poulet, faire revenir les oignons et poivrons émincés.",
+      "Ajouter les tomates coupées en dés et le jambon en lanières.",
+      "Remettre le poulet, saupoudrer de piment d'Espelette.",
+      "Couvrir et laisser mijoter 40 minutes à feu doux.",
+      "Cuire le riz à part et servir avec le poulet basquaise."
+    ]
+  },
+  {
+    id: 21,
+    nom: "Hachis parmentier",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 60,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Boeuf haché", quantite: 150, unite: "g", rayon: "viandes" },
+      { nom: "Pommes de terre", quantite: 250, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Oignons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Lait", quantite: 50, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 20, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Gruyère râpé", quantite: 30, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Éplucher les pommes de terre, les cuire 20 minutes dans l'eau salée.",
+      "Pendant ce temps, faire revenir l'oignon émincé puis le boeuf haché.",
+      "Écraser les pommes de terre avec le lait chaud et le beurre pour faire une purée.",
+      "Préchauffer le four à 200°C.",
+      "Mettre la viande dans un plat à gratin, recouvrir de purée.",
+      "Parsemer de gruyère râpé et enfourner 20 minutes jusqu'à gratinage."
+    ]
+  },
+  {
+    id: 22,
+    nom: "Rôti de porc aux pruneaux",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 90,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Rôti de porc", quantite: 180, unite: "g", rayon: "viandes" },
+      { nom: "Pruneaux", quantite: 50, unite: "g", rayon: "epicerie" },
+      { nom: "Vin blanc", quantite: 75, unite: "ml", rayon: "boissons" },
+      { nom: "Crème fraîche", quantite: 40, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Pommes de terre", quantite: 200, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Faire tremper les pruneaux dans le vin blanc tiède.",
+      "Préchauffer le four à 180°C.",
+      "Faire dorer le rôti de porc dans une cocotte sur toutes les faces.",
+      "Ajouter les pruneaux et le vin blanc, enfourner 1h en arrosant régulièrement.",
+      "Cuire les pommes de terre à la vapeur ou au four autour du rôti.",
+      "En fin de cuisson, ajouter la crème fraîche dans la sauce."
+    ]
+  },
+  {
+    id: 23,
+    nom: "Coq au vin",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 120,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Cuisses de poulet", quantite: 200, unite: "g", rayon: "viandes" },
+      { nom: "Lardons", quantite: 40, unite: "g", rayon: "viandes" },
+      { nom: "Champignons de Paris", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Oignons grelots", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Vin rouge", quantite: 150, unite: "ml", rayon: "boissons" },
+      { nom: "Carottes", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Pommes de terre", quantite: 150, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Faire dorer les morceaux de poulet dans une cocotte avec un peu d'huile.",
+      "Réserver le poulet, faire rissoler les lardons et les oignons grelots.",
+      "Ajouter les carottes en rondelles et les champignons.",
+      "Remettre le poulet, mouiller avec le vin rouge.",
+      "Couvrir et laisser mijoter 1h30 à feu doux.",
+      "Ajouter les pommes de terre 30 min avant la fin de cuisson."
+    ]
+  },
+  {
+    id: 24,
+    nom: "Escalope milanaise et spaghetti",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 30,
+    tags: ["rapide"],
+    ingredients: [
+      { nom: "Escalope de veau", quantite: 150, unite: "g", rayon: "viandes" },
+      { nom: "Chapelure", quantite: 30, unite: "g", rayon: "epicerie" },
+      { nom: "Oeufs", quantite: 0.5, unite: "pièce", rayon: "produits-laitiers" },
+      { nom: "Spaghetti", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Sauce tomate", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Parmesan", quantite: 20, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Aplatir l'escalope entre deux feuilles de film alimentaire.",
+      "Battre l'oeuf, passer l'escalope dans l'oeuf puis dans la chapelure.",
+      "Faire cuire les spaghetti al dente selon les instructions du paquet.",
+      "Faire chauffer la sauce tomate dans une casserole.",
+      "Cuire l'escalope panée dans de l'huile bien chaude, 3-4 min de chaque côté.",
+      "Servir l'escalope avec les spaghetti nappés de sauce et de parmesan."
+    ]
+  },
+  {
+    id: 25,
+    nom: "Émincé de boeuf aux oignons",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 25,
+    tags: ["rapide"],
+    ingredients: [
+      { nom: "Boeuf (rumsteck)", quantite: 150, unite: "g", rayon: "viandes" },
+      { nom: "Oignons", quantite: 150, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Sauce soja", quantite: 15, unite: "ml", rayon: "epicerie" },
+      { nom: "Huile", quantite: 15, unite: "ml", rayon: "epicerie" },
+      { nom: "Riz", quantite: 80, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire cuire le riz selon les instructions du paquet.",
+      "Émincer le boeuf en fines lanières et les oignons en lamelles.",
+      "Faire chauffer l'huile dans un wok ou une grande poêle à feu vif.",
+      "Saisir la viande 2-3 minutes, réserver.",
+      "Faire revenir les oignons jusqu'à ce qu'ils soient fondants.",
+      "Remettre la viande, ajouter la sauce soja et servir sur le riz."
+    ]
+  },
+  {
+    id: 26,
+    nom: "Jambon grillé et purée",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 25,
+    tags: ["rapide"],
+    ingredients: [
+      { nom: "Jambon blanc (épais)", quantite: 150, unite: "g", rayon: "viandes" },
+      { nom: "Pommes de terre", quantite: 250, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Lait", quantite: 50, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 20, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Muscade", quantite: 1, unite: "pincée", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Éplucher les pommes de terre et les couper en morceaux.",
+      "Les faire cuire 20 minutes dans l'eau salée bouillante.",
+      "Égoutter et écraser avec le lait chaud, le beurre et la muscade.",
+      "Faire griller le jambon dans une poêle chaude 2 min de chaque côté.",
+      "Servir le jambon avec la purée bien lisse."
+    ]
+  },
+  {
+    id: 27,
+    nom: "Pot-au-feu",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 180,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Boeuf (paleron)", quantite: 200, unite: "g", rayon: "viandes" },
+      { nom: "Os à moelle", quantite: 1, unite: "pièce", rayon: "viandes" },
+      { nom: "Carottes", quantite: 150, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Poireaux", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Navets", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Pommes de terre", quantite: 150, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Bouquet garni", quantite: 0.5, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Gros sel", quantite: 5, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Placer la viande et l'os à moelle dans une grande marmite d'eau froide.",
+      "Porter à ébullition et écumer régulièrement.",
+      "Ajouter le gros sel et le bouquet garni, baisser le feu.",
+      "Laisser mijoter 2 heures à petit feu.",
+      "Ajouter les carottes, poireaux et navets, cuire encore 30 min.",
+      "Ajouter les pommes de terre 20 min avant la fin. Servir avec de la moutarde et du gros sel."
+    ]
+  },
+  {
+    id: 28,
+    nom: "Cordon bleu et petits pois",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 25,
+    tags: ["rapide"],
+    ingredients: [
+      { nom: "Cordon bleu", quantite: 1, unite: "pièce", rayon: "viandes" },
+      { nom: "Petits pois", quantite: 150, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Pommes de terre", quantite: 150, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Éplucher les pommes de terre et les couper en cubes.",
+      "Faire cuire les pommes de terre et les petits pois à l'eau ou à la vapeur.",
+      "Faire cuire le cordon bleu à la poêle avec un peu de beurre, 5-6 min de chaque côté.",
+      "Faire sauter les petits pois au beurre avec sel et poivre.",
+      "Servir le cordon bleu doré avec les légumes."
+    ]
+  },
+  {
+    id: 29,
+    nom: "Boulettes de viande sauce tomate",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 40,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Boeuf haché", quantite: 150, unite: "g", rayon: "viandes" },
+      { nom: "Chapelure", quantite: 20, unite: "g", rayon: "epicerie" },
+      { nom: "Oeufs", quantite: 0.25, unite: "pièce", rayon: "produits-laitiers" },
+      { nom: "Tomates pelées", quantite: 200, unite: "g", rayon: "epicerie" },
+      { nom: "Oignons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Spaghetti", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Parmesan", quantite: 15, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Mélanger la viande hachée avec la chapelure, l'oeuf battu, sel et poivre.",
+      "Former des boulettes de la taille d'une noix.",
+      "Les faire dorer dans une poêle avec un peu d'huile.",
+      "Ajouter l'oignon émincé, puis les tomates pelées.",
+      "Laisser mijoter 20 minutes à feu doux.",
+      "Cuire les spaghetti et les servir avec les boulettes, sauce et parmesan."
+    ]
+  },
+  {
+    id: 30,
+    nom: "Magret de canard aux pommes",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 35,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Magret de canard", quantite: 180, unite: "g", rayon: "viandes" },
+      { nom: "Pommes", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Miel", quantite: 15, unite: "g", rayon: "epicerie" },
+      { nom: "Pommes de terre grenaille", quantite: 150, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Quadriller le gras du magret sans percer la chair.",
+      "Démarrer la cuisson côté gras dans une poêle froide, cuire 8-10 min.",
+      "Retourner et cuire 4-5 min côté chair. Laisser reposer 5 min.",
+      "Faire rôtir les pommes de terre grenaille au four avec du beurre.",
+      "Peler et couper les pommes, les faire caraméliser avec le miel.",
+      "Trancher le magret et servir avec les pommes caramélisées et les grenailles."
+    ]
+  },
+
+  // =====================
+  // DÉJEUNERS/DÎNERS - POISSONS (12)
+  // =====================
+  {
+    id: 31,
+    nom: "Saumon en papillote",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 30,
+    tags: ["leger"],
+    ingredients: [
+      { nom: "Pavé de saumon", quantite: 150, unite: "g", rayon: "poissonnerie" },
+      { nom: "Courgettes", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Citron", quantite: 0.5, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Aneth", quantite: 3, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Riz", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Huile d'olive", quantite: 10, unite: "ml", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Préchauffer le four à 200°C.",
+      "Couper les courgettes en fines rondelles.",
+      "Disposer le saumon sur une feuille de papier sulfurisé avec les courgettes.",
+      "Arroser d'huile d'olive, ajouter des rondelles de citron et de l'aneth.",
+      "Fermer hermétiquement la papillote et enfourner 15-20 minutes.",
+      "Servir avec le riz cuit à part."
+    ]
+  },
+  {
+    id: 32,
+    nom: "Filet de cabillaud et légumes",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 30,
+    tags: ["leger"],
+    ingredients: [
+      { nom: "Filet de cabillaud", quantite: 150, unite: "g", rayon: "poissonnerie" },
+      { nom: "Haricots verts", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Pommes de terre", quantite: 150, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Beurre", quantite: 20, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Citron", quantite: 0.25, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Persil", quantite: 5, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Faire cuire les pommes de terre et les haricots verts à l'eau ou à la vapeur.",
+      "Faire fondre le beurre dans une poêle à feu moyen.",
+      "Cuire le cabillaud 4-5 min de chaque côté.",
+      "Préparer un beurre persillé avec le reste du beurre et le persil haché.",
+      "Arroser le poisson de jus de citron.",
+      "Servir le cabillaud avec les légumes et le beurre persillé."
+    ]
+  },
+  {
+    id: 33,
+    nom: "Sardines grillées",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 20,
+    tags: ["rapide", "leger"],
+    ingredients: [
+      { nom: "Sardines fraîches", quantite: 200, unite: "g", rayon: "poissonnerie" },
+      { nom: "Citron", quantite: 0.5, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Huile d'olive", quantite: 15, unite: "ml", rayon: "epicerie" },
+      { nom: "Pain", quantite: 100, unite: "g", rayon: "boulangerie" },
+      { nom: "Tomates", quantite: 100, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Vider et écailler les sardines si nécessaire.",
+      "Les badigeonner d'huile d'olive, saler et poivrer.",
+      "Faire griller sous le gril du four ou à la plancha 3-4 min de chaque côté.",
+      "Couper les tomates en tranches, assaisonner.",
+      "Servir les sardines avec un filet de citron, les tomates et du pain."
+    ]
+  },
+  {
+    id: 34,
+    nom: "Brandade de morue",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 45,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Morue dessalée", quantite: 150, unite: "g", rayon: "poissonnerie" },
+      { nom: "Pommes de terre", quantite: 200, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Huile d'olive", quantite: 30, unite: "ml", rayon: "epicerie" },
+      { nom: "Lait", quantite: 50, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Ail", quantite: 1, unite: "gousse", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Faire cuire les pommes de terre épluchées 20 min à l'eau salée.",
+      "Pocher la morue 10 minutes dans de l'eau frémissante (non bouillante).",
+      "Émietter la morue en retirant la peau et les arêtes.",
+      "Écraser les pommes de terre avec la morue.",
+      "Incorporer progressivement l'huile d'olive, le lait chaud et l'ail écrasé.",
+      "Travailler le mélange jusqu'à obtenir une texture crémeuse."
+    ]
+  },
+  {
+    id: 35,
+    nom: "Crevettes sautées à l'ail",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 20,
+    tags: ["rapide"],
+    ingredients: [
+      { nom: "Crevettes", quantite: 150, unite: "g", rayon: "poissonnerie" },
+      { nom: "Ail", quantite: 2, unite: "gousses", rayon: "fruits-legumes" },
+      { nom: "Persil", quantite: 10, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Huile d'olive", quantite: 20, unite: "ml", rayon: "epicerie" },
+      { nom: "Riz", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Piment", quantite: 1, unite: "pincée", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire cuire le riz selon les instructions du paquet.",
+      "Décortiquer les crevettes si nécessaire.",
+      "Faire chauffer l'huile d'olive dans une poêle à feu vif.",
+      "Ajouter l'ail émincé et le piment, cuire 30 secondes.",
+      "Ajouter les crevettes et les faire sauter 3-4 minutes.",
+      "Parsemer de persil haché et servir sur le riz."
+    ]
+  },
+  {
+    id: 36,
+    nom: "Filet de truite aux amandes",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 25,
+    tags: ["rapide"],
+    ingredients: [
+      { nom: "Filet de truite", quantite: 150, unite: "g", rayon: "poissonnerie" },
+      { nom: "Amandes effilées", quantite: 20, unite: "g", rayon: "epicerie" },
+      { nom: "Beurre", quantite: 25, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Citron", quantite: 0.25, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Haricots verts", quantite: 120, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Faire cuire les haricots verts à l'eau ou à la vapeur.",
+      "Faire fondre la moitié du beurre, cuire la truite 4 min de chaque côté.",
+      "Réserver le poisson au chaud.",
+      "Dans la poêle, faire dorer les amandes avec le reste du beurre.",
+      "Déglacer avec le jus de citron.",
+      "Napper la truite de beurre aux amandes et servir avec les haricots."
+    ]
+  },
+  {
+    id: 37,
+    nom: "Moules marinières et frites",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 35,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Moules", quantite: 400, unite: "g", rayon: "poissonnerie" },
+      { nom: "Vin blanc", quantite: 75, unite: "ml", rayon: "boissons" },
+      { nom: "Échalotes", quantite: 30, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Persil", quantite: 10, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Pommes de terre (frites)", quantite: 200, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Huile de friture", quantite: 30, unite: "ml", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Gratter et laver soigneusement les moules, retirer le byssus.",
+      "Émincer les échalotes, les faire suer dans une grande casserole avec du beurre.",
+      "Ajouter les moules et le vin blanc, couvrir.",
+      "Cuire à feu vif 5-7 min en secouant régulièrement jusqu'à ouverture.",
+      "Pendant ce temps, préparer et frire les frites.",
+      "Parsemer les moules de persil haché et servir avec les frites."
+    ]
+  },
+  {
+    id: 38,
+    nom: "Dos de lieu noir au curry",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 30,
+    tags: ["rapide"],
+    ingredients: [
+      { nom: "Dos de lieu noir", quantite: 150, unite: "g", rayon: "poissonnerie" },
+      { nom: "Curry", quantite: 5, unite: "g", rayon: "epicerie" },
+      { nom: "Lait de coco", quantite: 100, unite: "ml", rayon: "epicerie" },
+      { nom: "Riz basmati", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Oignons", quantite: 50, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Faire cuire le riz basmati selon les instructions.",
+      "Faire revenir l'oignon émincé dans une poêle.",
+      "Ajouter le curry et mélanger 1 minute.",
+      "Verser le lait de coco et porter à frémissement.",
+      "Déposer le poisson dans la sauce, couvrir et cuire 10-12 min.",
+      "Servir le poisson nappé de sauce sur le riz."
+    ]
+  },
+  {
+    id: 39,
+    nom: "Fish and chips",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 40,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Filet de colin", quantite: 150, unite: "g", rayon: "poissonnerie" },
+      { nom: "Farine", quantite: 50, unite: "g", rayon: "epicerie" },
+      { nom: "Bière", quantite: 75, unite: "ml", rayon: "boissons" },
+      { nom: "Pommes de terre (frites)", quantite: 200, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Huile de friture", quantite: 50, unite: "ml", rayon: "epicerie" },
+      { nom: "Citron", quantite: 0.25, unite: "pièce", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Préparer la pâte : mélanger la farine avec la bière froide jusqu'à consistance lisse.",
+      "Couper les pommes de terre en frites épaisses.",
+      "Faire chauffer l'huile à 180°C.",
+      "Fariner le poisson, le tremper dans la pâte et le frire 5-6 min.",
+      "Frire les frites jusqu'à ce qu'elles soient dorées.",
+      "Servir le poisson et les frites avec du citron."
+    ]
+  },
+  {
+    id: 40,
+    nom: "Thon grillé et ratatouille",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 45,
+    tags: ["leger"],
+    ingredients: [
+      { nom: "Steak de thon", quantite: 150, unite: "g", rayon: "poissonnerie" },
+      { nom: "Courgettes", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Aubergines", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Poivrons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Tomates", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Huile d'olive", quantite: 20, unite: "ml", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Couper tous les légumes en cubes de taille similaire.",
+      "Faire revenir les légumes séparément puis les réunir dans une poêle.",
+      "Laisser mijoter 20 min à couvert, assaisonner.",
+      "Huiler et assaisonner le steak de thon.",
+      "Le saisir 2 min de chaque côté dans une poêle très chaude (rosé au centre).",
+      "Servir le thon sur un lit de ratatouille."
+    ]
+  },
+  {
+    id: 41,
+    nom: "Sole meunière",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 25,
+    tags: ["rapide"],
+    ingredients: [
+      { nom: "Filet de sole", quantite: 150, unite: "g", rayon: "poissonnerie" },
+      { nom: "Farine", quantite: 20, unite: "g", rayon: "epicerie" },
+      { nom: "Beurre", quantite: 30, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Citron", quantite: 0.5, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Persil", quantite: 5, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Pommes de terre vapeur", quantite: 150, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Faire cuire les pommes de terre à la vapeur.",
+      "Fariner légèrement les filets de sole.",
+      "Faire fondre le beurre dans une poêle à feu moyen-vif.",
+      "Cuire les filets 2-3 min de chaque côté.",
+      "Ajouter du jus de citron et du persil dans le beurre de cuisson.",
+      "Servir la sole nappée de beurre citronné avec les pommes vapeur."
+    ]
+  },
+  {
+    id: 42,
+    nom: "Gambas à la plancha",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 20,
+    tags: ["rapide"],
+    ingredients: [
+      { nom: "Gambas", quantite: 150, unite: "g", rayon: "poissonnerie" },
+      { nom: "Ail", quantite: 2, unite: "gousses", rayon: "fruits-legumes" },
+      { nom: "Huile d'olive", quantite: 20, unite: "ml", rayon: "epicerie" },
+      { nom: "Persil", quantite: 10, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Riz", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Citron", quantite: 0.5, unite: "pièce", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Faire cuire le riz selon les instructions.",
+      "Préparer une persillade avec l'ail haché, le persil et l'huile d'olive.",
+      "Faire chauffer une plancha ou une poêle à feu très vif.",
+      "Saisir les gambas 2 min de chaque côté.",
+      "Napper de persillade et d'un filet de citron.",
+      "Servir les gambas sur le riz avec le jus de cuisson."
+    ]
+  },
+
+  // =====================
+  // DÉJEUNERS/DÎNERS - VÉGÉTARIENS (15)
+  // =====================
+  {
+    id: 43,
+    nom: "Quiche aux légumes",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 50,
+    tags: ["vegetarien"],
+    ingredients: [
+      { nom: "Pâte brisée", quantite: 60, unite: "g", rayon: "epicerie" },
+      { nom: "Oeufs", quantite: 1, unite: "pièce", rayon: "produits-laitiers" },
+      { nom: "Crème fraîche", quantite: 50, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Courgettes", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Tomates", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Gruyère râpé", quantite: 30, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Salade verte", quantite: 40, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Préchauffer le four à 180°C.",
+      "Étaler la pâte dans un moule à tarte et la piquer à la fourchette.",
+      "Couper les courgettes et tomates en rondelles fines.",
+      "Battre l'oeuf avec la crème, saler et poivrer.",
+      "Disposer les légumes sur la pâte, verser l'appareil, parsemer de gruyère.",
+      "Enfourner 35-40 min. Servir tiède avec la salade."
+    ]
+  },
+  {
+    id: 44,
+    nom: "Gratin de courgettes",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 45,
+    tags: ["vegetarien", "leger"],
+    ingredients: [
+      { nom: "Courgettes", quantite: 250, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Crème fraîche", quantite: 50, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Gruyère râpé", quantite: 40, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Ail", quantite: 1, unite: "gousse", rayon: "fruits-legumes" },
+      { nom: "Pain", quantite: 80, unite: "g", rayon: "boulangerie" }
+    ],
+    etapes: [
+      "Préchauffer le four à 200°C.",
+      "Couper les courgettes en rondelles, les faire revenir à la poêle 5 min.",
+      "Frotter un plat à gratin avec l'ail coupé en deux.",
+      "Disposer les courgettes, napper de crème fraîche assaisonnée.",
+      "Parsemer de gruyère râpé.",
+      "Enfourner 25-30 min. Servir avec du pain."
+    ]
+  },
+  {
+    id: 45,
+    nom: "Omelette aux champignons",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 15,
+    tags: ["vegetarien", "rapide", "proteine"],
+    ingredients: [
+      { nom: "Oeufs", quantite: 3, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Champignons de Paris", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Persil", quantite: 5, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Salade verte", quantite: 50, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Émincer les champignons et les faire sauter au beurre jusqu'à évaporation de l'eau.",
+      "Battre les oeufs avec le sel, le poivre et le persil haché.",
+      "Ajouter un peu de beurre dans la poêle avec les champignons.",
+      "Verser les oeufs battus et cuire en ramenant les bords vers le centre.",
+      "Plier l'omelette quand elle est encore baveuse au centre.",
+      "Servir avec la salade assaisonnée."
+    ]
+  },
+  {
+    id: 46,
+    nom: "Pâtes aux légumes du soleil",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 25,
+    tags: ["vegetarien", "rapide"],
+    ingredients: [
+      { nom: "Pennes", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Courgettes", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Tomates cerises", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Poivrons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Huile d'olive", quantite: 15, unite: "ml", rayon: "epicerie" },
+      { nom: "Parmesan", quantite: 20, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Basilic", quantite: 5, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Faire cuire les pâtes al dente selon les instructions.",
+      "Couper les courgettes et poivrons en dés, les tomates en deux.",
+      "Faire sauter les légumes dans l'huile d'olive 8-10 min.",
+      "Égoutter les pâtes en gardant un peu d'eau de cuisson.",
+      "Mélanger les pâtes avec les légumes, ajouter un peu d'eau de cuisson si besoin.",
+      "Servir avec le parmesan râpé et le basilic ciselé."
+    ]
+  },
+  {
+    id: 47,
+    nom: "Risotto aux champignons",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 35,
+    tags: ["vegetarien"],
+    ingredients: [
+      { nom: "Riz arborio", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Champignons de Paris", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Bouillon de légumes", quantite: 250, unite: "ml", rayon: "epicerie" },
+      { nom: "Parmesan", quantite: 25, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Oignons", quantite: 30, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Vin blanc", quantite: 30, unite: "ml", rayon: "boissons" }
+    ],
+    etapes: [
+      "Faire chauffer le bouillon et le garder au chaud.",
+      "Faire revenir l'oignon émincé dans le beurre, ajouter les champignons.",
+      "Ajouter le riz et le nacrer 2 min en remuant.",
+      "Déglacer avec le vin blanc.",
+      "Ajouter le bouillon louche par louche en remuant constamment.",
+      "Terminer avec le parmesan et un peu de beurre. Servir crémeux."
+    ]
+  },
+  {
+    id: 48,
+    nom: "Tartiflette végétarienne",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 50,
+    tags: ["vegetarien", "copieux"],
+    ingredients: [
+      { nom: "Pommes de terre", quantite: 250, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Reblochon", quantite: 60, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Oignons", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Crème fraîche", quantite: 40, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Champignons de Paris", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Salade verte", quantite: 40, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Préchauffer le four à 200°C.",
+      "Cuire les pommes de terre à l'eau 15 min, les égoutter et les couper en rondelles.",
+      "Faire revenir les oignons et les champignons émincés.",
+      "Dans un plat à gratin, alterner pommes de terre, légumes et crème.",
+      "Couper le reblochon en deux et le poser sur le dessus, croûte vers le haut.",
+      "Enfourner 20-25 min jusqu'à ce que le fromage soit fondu. Servir avec la salade."
+    ]
+  },
+  {
+    id: 49,
+    nom: "Gratin dauphinois",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 75,
+    tags: ["vegetarien", "copieux"],
+    ingredients: [
+      { nom: "Pommes de terre", quantite: 300, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Crème fraîche", quantite: 100, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Lait", quantite: 50, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Ail", quantite: 1, unite: "gousse", rayon: "fruits-legumes" },
+      { nom: "Muscade", quantite: 1, unite: "pincée", rayon: "epicerie" },
+      { nom: "Salade verte", quantite: 50, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Préchauffer le four à 150°C.",
+      "Éplucher et couper les pommes de terre en fines rondelles.",
+      "Frotter un plat à gratin avec l'ail coupé en deux.",
+      "Mélanger la crème, le lait, sel, poivre et muscade.",
+      "Disposer les pommes de terre en couches, verser le mélange crémé.",
+      "Enfourner 1h à 1h15 jusqu'à ce que le dessus soit doré. Servir avec la salade."
+    ]
+  },
+  {
+    id: 50,
+    nom: "Lasagnes végétariennes",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 60,
+    tags: ["vegetarien", "copieux"],
+    ingredients: [
+      { nom: "Feuilles de lasagne", quantite: 60, unite: "g", rayon: "epicerie" },
+      { nom: "Épinards", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Ricotta", quantite: 75, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Sauce tomate", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Mozzarella", quantite: 50, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Parmesan", quantite: 20, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Préchauffer le four à 180°C.",
+      "Faire revenir les épinards et les mélanger avec la ricotta.",
+      "Dans un plat à gratin, alterner : sauce tomate, feuilles de lasagne, mélange épinards-ricotta.",
+      "Répéter les couches en terminant par la sauce tomate.",
+      "Parsemer de mozzarella et de parmesan.",
+      "Enfourner 35-40 min jusqu'à ce que le dessus soit gratiné."
+    ]
+  },
+  {
+    id: 51,
+    nom: "Curry de légumes",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 35,
+    tags: ["vegetarien"],
+    ingredients: [
+      { nom: "Pois chiches (conserve)", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Lait de coco", quantite: 100, unite: "ml", rayon: "epicerie" },
+      { nom: "Tomates", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Épinards", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Curry", quantite: 5, unite: "g", rayon: "epicerie" },
+      { nom: "Riz basmati", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Oignons", quantite: 50, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Faire cuire le riz basmati selon les instructions.",
+      "Faire revenir l'oignon émincé jusqu'à ce qu'il soit translucide.",
+      "Ajouter le curry et cuire 1 minute en remuant.",
+      "Ajouter les tomates coupées, les pois chiches égouttés et le lait de coco.",
+      "Laisser mijoter 15 min, ajouter les épinards en fin de cuisson.",
+      "Servir le curry sur le riz basmati."
+    ]
+  },
+  {
+    id: 52,
+    nom: "Croque-monsieur",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 15,
+    tags: ["rapide", "copieux"],
+    ingredients: [
+      { nom: "Pain de mie", quantite: 2, unite: "tranches", rayon: "boulangerie" },
+      { nom: "Jambon blanc", quantite: 50, unite: "g", rayon: "viandes" },
+      { nom: "Gruyère râpé", quantite: 40, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Salade verte", quantite: 50, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Beurrer l'extérieur des deux tranches de pain.",
+      "Garnir l'intérieur de jambon et de fromage râpé.",
+      "Refermer le sandwich.",
+      "Cuire à la poêle ou au four jusqu'à ce que le pain soit doré et le fromage fondu.",
+      "Servir chaud avec la salade assaisonnée."
+    ]
+  },
+  {
+    id: 53,
+    nom: "Salade composée complète",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 20,
+    tags: ["rapide", "leger"],
+    ingredients: [
+      { nom: "Salade verte", quantite: 80, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Tomates", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Oeufs", quantite: 1, unite: "pièce", rayon: "produits-laitiers" },
+      { nom: "Maïs", quantite: 50, unite: "g", rayon: "epicerie" },
+      { nom: "Thon (conserve)", quantite: 50, unite: "g", rayon: "epicerie" },
+      { nom: "Vinaigrette", quantite: 20, unite: "ml", rayon: "epicerie" },
+      { nom: "Pain", quantite: 60, unite: "g", rayon: "boulangerie" }
+    ],
+    etapes: [
+      "Faire cuire l'oeuf dur 10 minutes, le refroidir et l'écaler.",
+      "Laver et essorer la salade, la disposer dans une assiette.",
+      "Couper les tomates en quartiers et l'oeuf en rondelles.",
+      "Émietter le thon et égoutter le maïs.",
+      "Disposer tous les ingrédients sur la salade.",
+      "Assaisonner de vinaigrette et servir avec le pain."
+    ]
+  },
+  {
+    id: 54,
+    nom: "Soupe de légumes",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 40,
+    tags: ["vegetarien", "leger"],
+    ingredients: [
+      { nom: "Carottes", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Poireaux", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Pommes de terre", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Courgettes", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Bouillon de légumes", quantite: 300, unite: "ml", rayon: "epicerie" },
+      { nom: "Crème fraîche", quantite: 20, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Pain", quantite: 80, unite: "g", rayon: "boulangerie" }
+    ],
+    etapes: [
+      "Éplucher et couper tous les légumes en morceaux.",
+      "Les mettre dans une grande casserole avec le bouillon.",
+      "Porter à ébullition et laisser cuire 25-30 minutes.",
+      "Mixer la soupe jusqu'à obtenir la consistance désirée.",
+      "Ajouter la crème fraîche, rectifier l'assaisonnement.",
+      "Servir bien chaud avec des croûtons de pain."
+    ]
+  },
+  {
+    id: 55,
+    nom: "Galettes de sarrasin complètes",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 25,
+    tags: ["rapide"],
+    ingredients: [
+      { nom: "Farine de sarrasin", quantite: 50, unite: "g", rayon: "epicerie" },
+      { nom: "Oeufs", quantite: 1, unite: "pièce", rayon: "produits-laitiers" },
+      { nom: "Jambon blanc", quantite: 50, unite: "g", rayon: "viandes" },
+      { nom: "Gruyère râpé", quantite: 40, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 10, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Salade verte", quantite: 40, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Mélanger la farine de sarrasin avec de l'eau et une pincée de sel.",
+      "Faire cuire la galette dans une poêle beurrée.",
+      "Retourner, déposer le jambon et le fromage au centre.",
+      "Casser l'oeuf par-dessus et replier les bords.",
+      "Couvrir pour que l'oeuf cuise et le fromage fonde.",
+      "Servir avec la salade."
+    ]
+  },
+  {
+    id: 56,
+    nom: "Pizza maison",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 45,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Pâte à pizza", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Sauce tomate", quantite: 50, unite: "g", rayon: "epicerie" },
+      { nom: "Mozzarella", quantite: 60, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Champignons de Paris", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Jambon blanc", quantite: 40, unite: "g", rayon: "viandes" },
+      { nom: "Olives noires", quantite: 20, unite: "g", rayon: "epicerie" },
+      { nom: "Origan", quantite: 1, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Préchauffer le four à 220°C.",
+      "Étaler la pâte à pizza sur une plaque ou dans un moule.",
+      "Étaler la sauce tomate sur la pâte.",
+      "Répartir la mozzarella coupée, les champignons émincés et le jambon.",
+      "Ajouter les olives et saupoudrer d'origan.",
+      "Enfourner 15-20 minutes jusqu'à ce que la pâte soit dorée."
+    ]
+  },
+  {
+    id: 57,
+    nom: "Falafels et houmous",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 40,
+    tags: ["vegetarien"],
+    ingredients: [
+      { nom: "Pois chiches (conserve)", quantite: 150, unite: "g", rayon: "epicerie" },
+      { nom: "Oignons", quantite: 30, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Ail", quantite: 1, unite: "gousse", rayon: "fruits-legumes" },
+      { nom: "Cumin", quantite: 2, unite: "g", rayon: "epicerie" },
+      { nom: "Persil", quantite: 10, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Tahini", quantite: 20, unite: "g", rayon: "epicerie" },
+      { nom: "Pain pita", quantite: 1, unite: "pièce", rayon: "boulangerie" },
+      { nom: "Huile", quantite: 30, unite: "ml", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Mixer 2/3 des pois chiches avec l'oignon, l'ail, le persil et le cumin pour les falafels.",
+      "Former des boulettes et les frire dans l'huile chaude jusqu'à ce qu'elles soient dorées.",
+      "Pour le houmous : mixer le reste des pois chiches avec le tahini, de l'huile et du citron.",
+      "Réchauffer les pains pita.",
+      "Servir les falafels avec le houmous et le pain pita."
+    ]
+  },
+
+  // =====================
+  // PLATS COMPLETS (8)
+  // =====================
+  {
+    id: 58,
+    nom: "Couscous poulet",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 60,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Cuisses de poulet", quantite: 150, unite: "g", rayon: "viandes" },
+      { nom: "Semoule de couscous", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Carottes", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Courgettes", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Pois chiches (conserve)", quantite: 50, unite: "g", rayon: "epicerie" },
+      { nom: "Navets", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Ras el hanout", quantite: 3, unite: "g", rayon: "epicerie" },
+      { nom: "Harissa", quantite: 5, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire dorer les morceaux de poulet dans une grande cocotte.",
+      "Ajouter les légumes coupés en gros morceaux et le ras el hanout.",
+      "Couvrir d'eau et laisser mijoter 40 minutes.",
+      "Ajouter les pois chiches 10 minutes avant la fin.",
+      "Préparer la semoule selon les instructions, l'égrainer à la fourchette.",
+      "Servir le bouillon, la viande et les légumes sur la semoule, avec de l'harissa à part."
+    ]
+  },
+  {
+    id: 59,
+    nom: "Cassoulet",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 120,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Haricots blancs (conserve)", quantite: 150, unite: "g", rayon: "epicerie" },
+      { nom: "Saucisses de Toulouse", quantite: 100, unite: "g", rayon: "viandes" },
+      { nom: "Confit de canard", quantite: 80, unite: "g", rayon: "viandes" },
+      { nom: "Lardons", quantite: 30, unite: "g", rayon: "viandes" },
+      { nom: "Tomates pelées", quantite: 75, unite: "g", rayon: "epicerie" },
+      { nom: "Oignons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Chapelure", quantite: 20, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Préchauffer le four à 150°C.",
+      "Faire revenir les lardons et l'oignon émincé.",
+      "Faire dorer les saucisses, les couper en morceaux.",
+      "Dans un plat en terre, alterner haricots, viandes, tomates.",
+      "Saupoudrer de chapelure et enfourner 1h30.",
+      "Casser la croûte plusieurs fois pendant la cuisson et remettre de la chapelure."
+    ]
+  },
+  {
+    id: 60,
+    nom: "Choucroute garnie",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 90,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Choucroute", quantite: 200, unite: "g", rayon: "epicerie" },
+      { nom: "Saucisse de Strasbourg", quantite: 100, unite: "g", rayon: "viandes" },
+      { nom: "Lard fumé", quantite: 50, unite: "g", rayon: "viandes" },
+      { nom: "Pommes de terre", quantite: 150, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Vin blanc", quantite: 50, unite: "ml", rayon: "boissons" },
+      { nom: "Baies de genièvre", quantite: 3, unite: "pièces", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Rincer la choucroute et bien l'essorer.",
+      "Dans une cocotte, disposer la choucroute avec le vin blanc et les baies de genièvre.",
+      "Ajouter le lard fumé, couvrir et cuire 1h à feu doux.",
+      "Faire cuire les pommes de terre à l'eau ou à la vapeur.",
+      "Ajouter les saucisses 15 min avant la fin pour les réchauffer.",
+      "Servir la choucroute avec les viandes et les pommes de terre."
+    ]
+  },
+  {
+    id: 61,
+    nom: "Pâtes carbonara",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 20,
+    tags: ["rapide", "copieux"],
+    ingredients: [
+      { nom: "Spaghetti", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Lardons", quantite: 50, unite: "g", rayon: "viandes" },
+      { nom: "Oeufs", quantite: 1, unite: "pièce", rayon: "produits-laitiers" },
+      { nom: "Parmesan", quantite: 30, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Crème fraîche", quantite: 30, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Poivre", quantite: 1, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire cuire les spaghetti al dente.",
+      "Faire rissoler les lardons sans matière grasse.",
+      "Battre l'oeuf avec la crème, le parmesan et beaucoup de poivre.",
+      "Égoutter les pâtes en gardant un peu d'eau de cuisson.",
+      "Hors du feu, mélanger les pâtes avec les lardons et le mélange oeuf-crème.",
+      "L'appareil doit être crémeux, pas brouillé. Servir immédiatement."
+    ]
+  },
+  {
+    id: 62,
+    nom: "Gratin de pâtes au jambon",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 35,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Macaroni", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Jambon blanc", quantite: 60, unite: "g", rayon: "viandes" },
+      { nom: "Crème fraîche", quantite: 50, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Gruyère râpé", quantite: 40, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Lait", quantite: 50, unite: "ml", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Préchauffer le four à 200°C.",
+      "Faire cuire les macaroni al dente et les égoutter.",
+      "Couper le jambon en dés.",
+      "Mélanger les pâtes avec le jambon, la crème et le lait.",
+      "Verser dans un plat à gratin, parsemer de gruyère.",
+      "Enfourner 15-20 minutes jusqu'à gratinage."
+    ]
+  },
+  {
+    id: 63,
+    nom: "Chili con carne",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 45,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Boeuf haché", quantite: 150, unite: "g", rayon: "viandes" },
+      { nom: "Haricots rouges (conserve)", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Tomates pelées", quantite: 150, unite: "g", rayon: "epicerie" },
+      { nom: "Oignons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Poivrons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Cumin", quantite: 2, unite: "g", rayon: "epicerie" },
+      { nom: "Piment", quantite: 1, unite: "g", rayon: "epicerie" },
+      { nom: "Riz", quantite: 80, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire cuire le riz selon les instructions.",
+      "Faire revenir l'oignon et le poivron émincés.",
+      "Ajouter la viande hachée et la faire dorer en l'émiettant.",
+      "Ajouter les tomates, le cumin, le piment et les haricots égouttés.",
+      "Laisser mijoter 25-30 min à feu doux.",
+      "Servir le chili sur le riz."
+    ]
+  },
+  {
+    id: 64,
+    nom: "Bolognaise maison",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 50,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Spaghetti", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Boeuf haché", quantite: 100, unite: "g", rayon: "viandes" },
+      { nom: "Tomates pelées", quantite: 150, unite: "g", rayon: "epicerie" },
+      { nom: "Carottes", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Oignons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Céleri", quantite: 30, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Parmesan", quantite: 20, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Émincer finement l'oignon, la carotte et le céleri (faire une brunoise).",
+      "Faire revenir ces légumes dans de l'huile d'olive.",
+      "Ajouter la viande hachée et la faire dorer.",
+      "Ajouter les tomates pelées, saler, poivrer et laisser mijoter 30-40 min.",
+      "Faire cuire les spaghetti al dente.",
+      "Servir les pâtes nappées de sauce bolognaise et de parmesan."
+    ]
+  },
+  {
+    id: 65,
+    nom: "Paella",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 60,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Riz rond", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Cuisses de poulet", quantite: 100, unite: "g", rayon: "viandes" },
+      { nom: "Crevettes", quantite: 50, unite: "g", rayon: "poissonnerie" },
+      { nom: "Moules", quantite: 75, unite: "g", rayon: "poissonnerie" },
+      { nom: "Poivrons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Petits pois", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Safran", quantite: 0.1, unite: "g", rayon: "epicerie" },
+      { nom: "Bouillon de volaille", quantite: 200, unite: "ml", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire dorer les morceaux de poulet dans une grande poêle (paellera si possible).",
+      "Ajouter les poivrons émincés et faire revenir.",
+      "Ajouter le riz et le faire nacrer 2 minutes.",
+      "Verser le bouillon chaud avec le safran, ne plus remuer.",
+      "Ajouter les moules et les crevettes à mi-cuisson.",
+      "Cuire jusqu'à absorption du bouillon (environ 20 min). Servir directement dans la poêle."
+    ]
+  },
+
+  // =====================
+  // REPAS RAPIDES/ÉCONOMIQUES (5)
+  // =====================
+  {
+    id: 66,
+    nom: "Sandwich jambon-beurre",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 5,
+    tags: ["rapide", "leger"],
+    ingredients: [
+      { nom: "Baguette", quantite: 0.5, unite: "pièce", rayon: "boulangerie" },
+      { nom: "Jambon blanc", quantite: 60, unite: "g", rayon: "viandes" },
+      { nom: "Beurre", quantite: 20, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Couper la demi-baguette en deux dans le sens de la longueur.",
+      "Beurrer généreusement les deux faces intérieures.",
+      "Disposer les tranches de jambon.",
+      "Refermer et servir."
+    ]
+  },
+  {
+    id: 67,
+    nom: "Tartine de chèvre chaud",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 15,
+    tags: ["rapide", "vegetarien"],
+    ingredients: [
+      { nom: "Pain de campagne", quantite: 100, unite: "g", rayon: "boulangerie" },
+      { nom: "Fromage de chèvre", quantite: 60, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Miel", quantite: 10, unite: "g", rayon: "epicerie" },
+      { nom: "Salade verte", quantite: 60, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Noix", quantite: 15, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Préchauffer le gril du four.",
+      "Trancher le pain de campagne en tranches épaisses.",
+      "Déposer des rondelles de chèvre sur le pain.",
+      "Passer sous le gril 3-5 min jusqu'à ce que le fromage soit doré.",
+      "Arroser de miel, parsemer de noix concassées.",
+      "Servir sur un lit de salade assaisonnée."
+    ]
+  },
+  {
+    id: 68,
+    nom: "Oeufs au plat et salade",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 10,
+    tags: ["rapide", "proteine", "leger"],
+    ingredients: [
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Huile", quantite: 15, unite: "ml", rayon: "epicerie" },
+      { nom: "Salade verte", quantite: 60, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Tomates", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Pain", quantite: 80, unite: "g", rayon: "boulangerie" }
+    ],
+    etapes: [
+      "Laver et essorer la salade, couper les tomates.",
+      "Chauffer l'huile dans une poêle à feu moyen.",
+      "Casser les oeufs délicatement dans la poêle.",
+      "Cuire 3-4 minutes selon la cuisson désirée (blanc pris, jaune coulant).",
+      "Assaisonner la salade et les tomates.",
+      "Servir les oeufs avec la salade et le pain."
+    ]
+  },
+  {
+    id: 69,
+    nom: "Soupe à l'oignon gratinée",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 45,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Oignons", quantite: 200, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Bouillon de boeuf", quantite: 300, unite: "ml", rayon: "epicerie" },
+      { nom: "Pain", quantite: 60, unite: "g", rayon: "boulangerie" },
+      { nom: "Gruyère râpé", quantite: 40, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 20, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Vin blanc", quantite: 30, unite: "ml", rayon: "boissons" }
+    ],
+    etapes: [
+      "Émincer finement les oignons.",
+      "Les faire caraméliser à feu doux dans le beurre pendant 20 min.",
+      "Déglacer au vin blanc, laisser réduire.",
+      "Ajouter le bouillon et laisser mijoter 15 min.",
+      "Verser la soupe dans des bols allant au four, ajouter des croûtons.",
+      "Parsemer de gruyère et gratiner sous le gril 5 min."
+    ]
+  },
+  {
+    id: 70,
+    nom: "Wrap poulet crudités",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 15,
+    tags: ["rapide", "leger"],
+    ingredients: [
+      { nom: "Tortilla de blé", quantite: 1, unite: "pièce", rayon: "epicerie" },
+      { nom: "Blanc de poulet cuit", quantite: 80, unite: "g", rayon: "viandes" },
+      { nom: "Salade verte", quantite: 30, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Tomates", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Concombre", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Sauce yaourt", quantite: 30, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Émincer le poulet cuit en lanières.",
+      "Couper les tomates en dés et le concombre en rondelles.",
+      "Chauffer légèrement la tortilla à la poêle.",
+      "Étaler la sauce yaourt sur la tortilla.",
+      "Garnir de salade, poulet, tomates et concombre.",
+      "Rouler en repliant les côtés et servir."
+    ]
+  },
+
+  // =====================
+  // NOUVELLES RECETTES - PETITS-DÉJEUNERS
+  // =====================
+  {
+    id: 89,
+    nom: "Smoothie bowl protéiné",
+    categorie: "petit-dejeuner",
+    budget: 2,
+    tempsPreparation: 10,
+    tags: ["proteine", "low-sugar", "rapide"],
+    ingredients: [
+      { nom: "Fromage blanc", quantite: 150, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Banane", quantite: 1, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Flocons d'avoine", quantite: 30, unite: "g", rayon: "epicerie" },
+      { nom: "Amandes effilées", quantite: 15, unite: "g", rayon: "epicerie" },
+      { nom: "Miel", quantite: 10, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Mixer le fromage blanc avec la moitié de la banane jusqu'à obtenir une texture lisse.",
+      "Verser dans un bol.",
+      "Couper le reste de la banane en rondelles.",
+      "Disposer les rondelles de banane, les flocons d'avoine et les amandes sur le dessus.",
+      "Arroser de miel et servir frais."
+    ]
+  },
+  {
+    id: 90,
+    nom: "Toast à l'oeuf et champignons",
+    categorie: "petit-dejeuner",
+    budget: 1,
+    tempsPreparation: 15,
+    tags: ["proteine", "low-sugar", "copieux"],
+    ingredients: [
+      { nom: "Pain complet", quantite: 2, unite: "tranches", rayon: "boulangerie" },
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Champignons de Paris", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Beurre", quantite: 20, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Persil", quantite: 5, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Émincer les champignons et les faire sauter au beurre jusqu'à évaporation de l'eau.",
+      "Assaisonner de sel, poivre et persil haché.",
+      "Faire griller les tranches de pain.",
+      "Cuire les oeufs au plat dans le reste de beurre.",
+      "Garnir les toasts de champignons et déposer un oeuf sur chaque toast.",
+      "Servir immédiatement."
+    ]
+  },
+  {
+    id: 91,
+    nom: "Gaufres salées au jambon",
+    categorie: "petit-dejeuner",
+    budget: 2,
+    tempsPreparation: 20,
+    tags: ["proteine", "low-sugar", "copieux"],
+    ingredients: [
+      { nom: "Farine", quantite: 60, unite: "g", rayon: "epicerie" },
+      { nom: "Oeufs", quantite: 1, unite: "pièce", rayon: "produits-laitiers" },
+      { nom: "Lait", quantite: 100, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Jambon blanc", quantite: 50, unite: "g", rayon: "viandes" },
+      { nom: "Gruyère râpé", quantite: 30, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Mélanger la farine, l'oeuf et le lait pour faire une pâte lisse.",
+      "Ajouter le jambon coupé en dés et le gruyère râpé.",
+      "Préchauffer le gaufrier et le beurrer légèrement.",
+      "Verser une louche de pâte et cuire jusqu'à ce que la gaufre soit dorée.",
+      "Répéter pour utiliser toute la pâte.",
+      "Servir chaud, nature ou avec une salade."
+    ]
+  },
+  {
+    id: 92,
+    nom: "Bol de cottage cheese aux noix",
+    categorie: "petit-dejeuner",
+    budget: 2,
+    tempsPreparation: 5,
+    tags: ["proteine", "low-sugar", "rapide", "leger"],
+    ingredients: [
+      { nom: "Fromage blanc", quantite: 200, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Noix", quantite: 20, unite: "g", rayon: "epicerie" },
+      { nom: "Miel", quantite: 10, unite: "g", rayon: "epicerie" },
+      { nom: "Cannelle", quantite: 1, unite: "pincée", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Verser le fromage blanc dans un bol.",
+      "Concasser grossièrement les noix.",
+      "Parsemer les noix sur le fromage blanc.",
+      "Arroser de miel et saupoudrer de cannelle.",
+      "Servir immédiatement."
+    ]
+  },
+  {
+    id: 93,
+    nom: "Toasts au beurre de cacahuète et banane",
+    categorie: "petit-dejeuner",
+    budget: 1,
+    tempsPreparation: 5,
+    tags: ["sucre", "rapide", "proteine"],
+    ingredients: [
+      { nom: "Pain complet", quantite: 2, unite: "tranches", rayon: "boulangerie" },
+      { nom: "Beurre de cacahuète", quantite: 30, unite: "g", rayon: "epicerie" },
+      { nom: "Banane", quantite: 1, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Miel", quantite: 10, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire griller les tranches de pain.",
+      "Tartiner généreusement de beurre de cacahuète.",
+      "Couper la banane en rondelles.",
+      "Disposer les rondelles de banane sur les tartines.",
+      "Arroser d'un filet de miel et servir."
+    ]
+  },
+  {
+    id: 94,
+    nom: "Oeufs brouillés au saumon",
+    categorie: "petit-dejeuner",
+    budget: 3,
+    tempsPreparation: 12,
+    tags: ["proteine", "low-sugar", "copieux", "rapide"],
+    ingredients: [
+      { nom: "Oeufs", quantite: 3, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Saumon fumé", quantite: 40, unite: "g", rayon: "poissonnerie" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Ciboulette", quantite: 5, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Pain complet", quantite: 2, unite: "tranches", rayon: "boulangerie" }
+    ],
+    etapes: [
+      "Battre les oeufs avec une pincée de sel.",
+      "Faire fondre le beurre dans une poêle à feu doux.",
+      "Verser les oeufs et remuer constamment avec une spatule.",
+      "Quand les oeufs sont presque pris, ajouter le saumon fumé en lanières.",
+      "Retirer du feu, les oeufs doivent rester crémeux.",
+      "Servir sur les toasts avec la ciboulette ciselée."
+    ]
+  },
+  {
+    id: 95,
+    nom: "Pancakes protéinés à la banane",
+    categorie: "petit-dejeuner",
+    budget: 1,
+    tempsPreparation: 15,
+    tags: ["proteine", "low-sugar", "copieux"],
+    ingredients: [
+      { nom: "Banane", quantite: 1, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Flocons d'avoine", quantite: 40, unite: "g", rayon: "epicerie" },
+      { nom: "Beurre", quantite: 10, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Miel", quantite: 15, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Mixer la banane, les oeufs et les flocons d'avoine jusqu'à obtenir une pâte lisse.",
+      "Laisser reposer 5 minutes.",
+      "Faire fondre un peu de beurre dans une poêle à feu moyen.",
+      "Verser des petits tas de pâte et cuire 2 min de chaque côté.",
+      "Empiler les pancakes et arroser de miel.",
+      "Servir tiède."
+    ]
+  },
+
+  // =====================
+  // NOUVELLES RECETTES - VIANDES
+  // =====================
+  {
+    id: 96,
+    nom: "Poulet au citron et olives",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 50,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Cuisses de poulet", quantite: 200, unite: "g", rayon: "viandes" },
+      { nom: "Citron", quantite: 1, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Olives noires", quantite: 40, unite: "g", rayon: "epicerie" },
+      { nom: "Oignons", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Huile d'olive", quantite: 20, unite: "ml", rayon: "epicerie" },
+      { nom: "Riz", quantite: 80, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire dorer les cuisses de poulet dans l'huile d'olive.",
+      "Ajouter les oignons émincés et faire revenir.",
+      "Couper le citron en rondelles et l'ajouter avec les olives.",
+      "Mouiller avec un peu d'eau, couvrir et cuire 35 min à feu doux.",
+      "Faire cuire le riz à part.",
+      "Servir le poulet avec sa sauce sur le riz."
+    ]
+  },
+  {
+    id: 97,
+    nom: "Boeuf stroganoff",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 30,
+    tags: ["copieux", "rapide"],
+    ingredients: [
+      { nom: "Boeuf (rumsteck)", quantite: 180, unite: "g", rayon: "viandes" },
+      { nom: "Champignons de Paris", quantite: 150, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Oignons", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Crème fraîche", quantite: 80, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Moutarde", quantite: 10, unite: "g", rayon: "epicerie" },
+      { nom: "Riz", quantite: 80, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Couper le boeuf en fines lanières.",
+      "Faire cuire le riz selon les instructions.",
+      "Faire revenir l'oignon émincé, ajouter les champignons.",
+      "Saisir la viande à feu vif 2-3 min, réserver.",
+      "Dans la poêle, ajouter la crème et la moutarde, mélanger.",
+      "Remettre la viande, réchauffer sans bouillir et servir sur le riz."
+    ]
+  },
+  {
+    id: 98,
+    nom: "Filet mignon en croûte",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 60,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Rôti de porc", quantite: 200, unite: "g", rayon: "viandes" },
+      { nom: "Pâte feuilletée", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Champignons de Paris", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Échalotes", quantite: 30, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Crème fraîche", quantite: 30, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Oeufs", quantite: 0.5, unite: "pièce", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Préchauffer le four à 200°C.",
+      "Saisir le filet mignon de tous côtés dans une poêle chaude.",
+      "Faire une duxelles : hacher les champignons et échalotes, les faire revenir avec la crème.",
+      "Étaler la pâte feuilletée, déposer la duxelles puis le filet mignon.",
+      "Refermer la pâte, dorer à l'oeuf battu.",
+      "Enfourner 25-30 min. Laisser reposer 5 min avant de trancher."
+    ]
+  },
+  {
+    id: 99,
+    nom: "Côtelettes d'agneau grillées",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 25,
+    tags: ["rapide", "copieux"],
+    ingredients: [
+      { nom: "Côtelettes d'agneau", quantite: 200, unite: "g", rayon: "viandes" },
+      { nom: "Ail", quantite: 2, unite: "gousses", rayon: "fruits-legumes" },
+      { nom: "Herbes de Provence", quantite: 3, unite: "g", rayon: "epicerie" },
+      { nom: "Huile d'olive", quantite: 20, unite: "ml", rayon: "epicerie" },
+      { nom: "Haricots verts", quantite: 150, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Mélanger l'huile d'olive avec l'ail écrasé et les herbes de Provence.",
+      "Badigeonner les côtelettes de ce mélange et laisser mariner 15 min.",
+      "Faire cuire les haricots verts à l'eau ou à la vapeur.",
+      "Cuire les côtelettes sur un gril ou à la poêle très chaude 3-4 min de chaque côté.",
+      "Laisser reposer 2 min avant de servir.",
+      "Accompagner des haricots verts."
+    ]
+  },
+  {
+    id: 100,
+    nom: "Émincé de porc au curry",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 25,
+    tags: ["rapide"],
+    ingredients: [
+      { nom: "Rôti de porc", quantite: 180, unite: "g", rayon: "viandes" },
+      { nom: "Lait de coco", quantite: 150, unite: "ml", rayon: "epicerie" },
+      { nom: "Curry", quantite: 8, unite: "g", rayon: "epicerie" },
+      { nom: "Oignons", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Poivrons", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Riz basmati", quantite: 80, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Couper le porc en fines lanières.",
+      "Faire cuire le riz basmati.",
+      "Faire revenir l'oignon et le poivron émincés.",
+      "Ajouter le porc et le faire dorer.",
+      "Saupoudrer de curry, mélanger, puis verser le lait de coco.",
+      "Laisser mijoter 10 min et servir sur le riz."
+    ]
+  },
+  {
+    id: 101,
+    nom: "Poulet teriyaki",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 30,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Cuisses de poulet", quantite: 200, unite: "g", rayon: "viandes" },
+      { nom: "Sauce soja", quantite: 30, unite: "ml", rayon: "epicerie" },
+      { nom: "Miel", quantite: 20, unite: "g", rayon: "epicerie" },
+      { nom: "Gingembre", quantite: 5, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Ail", quantite: 1, unite: "gousse", rayon: "fruits-legumes" },
+      { nom: "Riz", quantite: 80, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Mélanger la sauce soja, le miel, le gingembre râpé et l'ail écrasé.",
+      "Faire mariner le poulet dans cette sauce 15 min minimum.",
+      "Faire cuire le riz.",
+      "Cuire le poulet à la poêle en l'arrosant régulièrement de marinade.",
+      "Faire réduire le reste de sauce pour la rendre sirupeuse.",
+      "Servir le poulet nappé de sauce sur le riz."
+    ]
+  },
+  {
+    id: 102,
+    nom: "Sauté de veau aux légumes",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 45,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Veau (épaule)", quantite: 180, unite: "g", rayon: "viandes" },
+      { nom: "Carottes", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Courgettes", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Oignons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Vin blanc", quantite: 75, unite: "ml", rayon: "boissons" },
+      { nom: "Bouillon de volaille", quantite: 100, unite: "ml", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Couper le veau en cubes et les faire dorer dans une cocotte.",
+      "Réserver la viande, faire revenir les oignons.",
+      "Ajouter les carottes en rondelles, cuire 5 min.",
+      "Remettre la viande, déglacer au vin blanc.",
+      "Ajouter le bouillon, couvrir et cuire 30 min.",
+      "Ajouter les courgettes en dés 10 min avant la fin."
+    ]
+  },
+  {
+    id: 103,
+    nom: "Bavette à l'échalote",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 20,
+    tags: ["rapide", "copieux"],
+    ingredients: [
+      { nom: "Bavette de boeuf", quantite: 180, unite: "g", rayon: "viandes" },
+      { nom: "Échalotes", quantite: 80, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Beurre", quantite: 30, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Vin rouge", quantite: 50, unite: "ml", rayon: "boissons" },
+      { nom: "Pommes de terre", quantite: 200, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Faire cuire les pommes de terre à l'eau ou sautées.",
+      "Émincer finement les échalotes.",
+      "Cuire la bavette à la poêle bien chaude 2-3 min de chaque côté.",
+      "Réserver la viande au chaud, baisser le feu.",
+      "Faire fondre les échalotes dans le beurre, déglacer au vin rouge.",
+      "Napper la bavette de sauce aux échalotes et servir avec les pommes de terre."
+    ]
+  },
+  {
+    id: 104,
+    nom: "Brochettes de poulet marinées",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 35,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Cuisses de poulet", quantite: 200, unite: "g", rayon: "viandes" },
+      { nom: "Poivrons", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Oignons", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Huile d'olive", quantite: 20, unite: "ml", rayon: "epicerie" },
+      { nom: "Paprika", quantite: 5, unite: "g", rayon: "epicerie" },
+      { nom: "Riz", quantite: 80, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Couper le poulet en cubes et le faire mariner avec l'huile et le paprika.",
+      "Couper les poivrons et oignons en morceaux de même taille.",
+      "Enfiler alternativement poulet et légumes sur des brochettes.",
+      "Faire cuire le riz.",
+      "Griller les brochettes 10-12 min en les retournant régulièrement.",
+      "Servir avec le riz."
+    ]
+  },
+  {
+    id: 105,
+    nom: "Porc au caramel vietnamien",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 45,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Côtes de porc", quantite: 200, unite: "g", rayon: "viandes" },
+      { nom: "Sucre", quantite: 30, unite: "g", rayon: "epicerie" },
+      { nom: "Sauce soja", quantite: 20, unite: "ml", rayon: "epicerie" },
+      { nom: "Ail", quantite: 2, unite: "gousses", rayon: "fruits-legumes" },
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Riz", quantite: 80, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Couper le porc en morceaux.",
+      "Faire un caramel sec avec le sucre dans une casserole.",
+      "Ajouter un peu d'eau chaude (attention aux éclaboussures).",
+      "Ajouter le porc, l'ail, la sauce soja et couvrir d'eau.",
+      "Cuire 30 min à feu doux. Ajouter les oeufs durs écalés 10 min avant la fin.",
+      "Servir avec le riz, nappé de sauce caramel."
+    ]
+  },
+
+  // =====================
+  // NOUVELLES RECETTES - POISSONS
+  // =====================
+  {
+    id: 106,
+    nom: "Pavé de saumon teriyaki",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 25,
+    tags: ["rapide"],
+    ingredients: [
+      { nom: "Pavé de saumon", quantite: 150, unite: "g", rayon: "poissonnerie" },
+      { nom: "Sauce soja", quantite: 25, unite: "ml", rayon: "epicerie" },
+      { nom: "Miel", quantite: 15, unite: "g", rayon: "epicerie" },
+      { nom: "Gingembre", quantite: 3, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Riz basmati", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Haricots verts", quantite: 100, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Mélanger la sauce soja, le miel et le gingembre râpé.",
+      "Faire cuire le riz et les haricots verts.",
+      "Faire mariner le saumon 10 min dans la sauce.",
+      "Cuire le saumon à la poêle 3-4 min de chaque côté.",
+      "Faire réduire le reste de marinade pour la rendre sirupeuse.",
+      "Servir le saumon nappé de sauce avec le riz et les haricots."
+    ]
+  },
+  {
+    id: 107,
+    nom: "Filet de bar en croûte de sel",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 40,
+    tags: ["leger"],
+    ingredients: [
+      { nom: "Filet de bar", quantite: 180, unite: "g", rayon: "poissonnerie" },
+      { nom: "Gros sel", quantite: 300, unite: "g", rayon: "epicerie" },
+      { nom: "Blanc d'oeuf", quantite: 1, unite: "pièce", rayon: "produits-laitiers" },
+      { nom: "Herbes de Provence", quantite: 3, unite: "g", rayon: "epicerie" },
+      { nom: "Pommes de terre vapeur", quantite: 150, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Citron", quantite: 0.5, unite: "pièce", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Préchauffer le four à 200°C.",
+      "Mélanger le gros sel avec le blanc d'oeuf et les herbes.",
+      "Déposer une couche de sel dans un plat, poser le poisson.",
+      "Recouvrir entièrement de sel.",
+      "Enfourner 25-30 min.",
+      "Casser la croûte de sel, servir avec pommes de terre vapeur et citron."
+    ]
+  },
+  {
+    id: 108,
+    nom: "Curry de crevettes",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 25,
+    tags: ["rapide"],
+    ingredients: [
+      { nom: "Crevettes", quantite: 180, unite: "g", rayon: "poissonnerie" },
+      { nom: "Lait de coco", quantite: 150, unite: "ml", rayon: "epicerie" },
+      { nom: "Curry", quantite: 8, unite: "g", rayon: "epicerie" },
+      { nom: "Tomates", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Oignons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Riz basmati", quantite: 80, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire cuire le riz basmati.",
+      "Faire revenir l'oignon émincé.",
+      "Ajouter le curry et mélanger 1 minute.",
+      "Ajouter les tomates coupées et le lait de coco.",
+      "Porter à frémissement, ajouter les crevettes et cuire 5 min.",
+      "Servir le curry de crevettes sur le riz."
+    ]
+  },
+  {
+    id: 109,
+    nom: "Gratin de poisson aux épinards",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 40,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Filet de cabillaud", quantite: 150, unite: "g", rayon: "poissonnerie" },
+      { nom: "Épinards", quantite: 150, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Crème fraîche", quantite: 80, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Gruyère râpé", quantite: 50, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Ail", quantite: 1, unite: "gousse", rayon: "fruits-legumes" },
+      { nom: "Muscade", quantite: 1, unite: "pincée", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Préchauffer le four à 180°C.",
+      "Faire fondre les épinards avec l'ail à la poêle.",
+      "Ajouter la moitié de la crème et la muscade.",
+      "Disposer les épinards dans un plat, poser le poisson dessus.",
+      "Napper du reste de crème et parsemer de gruyère.",
+      "Enfourner 20-25 min jusqu'à gratinage."
+    ]
+  },
+  {
+    id: 110,
+    nom: "Papillote de dorade aux légumes",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 35,
+    tags: ["leger"],
+    ingredients: [
+      { nom: "Filet de dorade", quantite: 150, unite: "g", rayon: "poissonnerie" },
+      { nom: "Courgettes", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Tomates cerises", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Citron", quantite: 0.5, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Huile d'olive", quantite: 15, unite: "ml", rayon: "epicerie" },
+      { nom: "Basilic", quantite: 5, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Préchauffer le four à 200°C.",
+      "Couper les courgettes en rondelles et les tomates en deux.",
+      "Disposer les légumes sur une feuille de papier sulfurisé.",
+      "Poser le filet de dorade, arroser d'huile et de jus de citron.",
+      "Ajouter le basilic, fermer la papillote hermétiquement.",
+      "Enfourner 18-20 min. Servir directement dans la papillote."
+    ]
+  },
+  {
+    id: 111,
+    nom: "Tacos de poisson",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 25,
+    tags: ["rapide"],
+    ingredients: [
+      { nom: "Filet de colin", quantite: 150, unite: "g", rayon: "poissonnerie" },
+      { nom: "Tortilla de blé", quantite: 2, unite: "pièces", rayon: "epicerie" },
+      { nom: "Chou blanc", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Avocat", quantite: 0.5, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Citron", quantite: 0.5, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Crème fraîche", quantite: 30, unite: "ml", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Assaisonner le poisson et le cuire à la poêle 3-4 min de chaque côté.",
+      "Émietter le poisson en gros morceaux.",
+      "Émincer finement le chou, écraser l'avocat avec du citron.",
+      "Mélanger la crème avec un peu de jus de citron.",
+      "Réchauffer les tortillas à la poêle.",
+      "Garnir les tortillas de poisson, chou, avocat et crème citronnée."
+    ]
+  },
+  {
+    id: 112,
+    nom: "Risotto aux fruits de mer",
+    categorie: "plat",
+    budget: 3,
+    tempsPreparation: 40,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Riz arborio", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Crevettes", quantite: 80, unite: "g", rayon: "poissonnerie" },
+      { nom: "Moules", quantite: 100, unite: "g", rayon: "poissonnerie" },
+      { nom: "Vin blanc", quantite: 50, unite: "ml", rayon: "boissons" },
+      { nom: "Bouillon de légumes", quantite: 300, unite: "ml", rayon: "epicerie" },
+      { nom: "Parmesan", quantite: 25, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Ouvrir les moules à feu vif avec un peu de vin blanc, récupérer le jus.",
+      "Faire chauffer le bouillon avec le jus des moules.",
+      "Faire nacrer le riz, déglacer au vin blanc.",
+      "Ajouter le bouillon louche par louche en remuant.",
+      "Ajouter les crevettes et les moules décortiquées en fin de cuisson.",
+      "Finir avec le parmesan et servir crémeux."
+    ]
+  },
+
+  // =====================
+  // NOUVELLES RECETTES - VÉGÉTARIENS
+  // =====================
+  {
+    id: 113,
+    nom: "Buddha bowl",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 30,
+    tags: ["vegetarien", "leger"],
+    ingredients: [
+      { nom: "Riz", quantite: 60, unite: "g", rayon: "epicerie" },
+      { nom: "Pois chiches (conserve)", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Avocat", quantite: 0.5, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Carottes", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Chou rouge", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Tahini", quantite: 15, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire cuire le riz et le laisser refroidir légèrement.",
+      "Rôtir les pois chiches au four avec un peu d'huile et d'épices.",
+      "Râper les carottes, émincer le chou rouge.",
+      "Trancher l'avocat.",
+      "Préparer une sauce avec le tahini dilué dans un peu d'eau et de citron.",
+      "Disposer tous les éléments dans un bol et arroser de sauce tahini."
+    ]
+  },
+  {
+    id: 114,
+    nom: "Aubergines à la parmigiana",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 50,
+    tags: ["vegetarien", "copieux"],
+    ingredients: [
+      { nom: "Aubergines", quantite: 200, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Sauce tomate", quantite: 150, unite: "g", rayon: "epicerie" },
+      { nom: "Mozzarella", quantite: 80, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Parmesan", quantite: 30, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Basilic", quantite: 5, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Huile d'olive", quantite: 20, unite: "ml", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Préchauffer le four à 180°C.",
+      "Couper les aubergines en tranches et les faire griller à la poêle.",
+      "Dans un plat à gratin, alterner : sauce tomate, aubergines, mozzarella.",
+      "Répéter les couches en terminant par la sauce.",
+      "Parsemer de parmesan et de basilic.",
+      "Enfourner 30 min jusqu'à gratinage."
+    ]
+  },
+  {
+    id: 115,
+    nom: "Dahl de lentilles corail",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 35,
+    tags: ["vegetarien", "copieux"],
+    ingredients: [
+      { nom: "Lentilles corail", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Lait de coco", quantite: 100, unite: "ml", rayon: "epicerie" },
+      { nom: "Tomates pelées", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Oignons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Curry", quantite: 8, unite: "g", rayon: "epicerie" },
+      { nom: "Riz basmati", quantite: 80, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire revenir l'oignon émincé, ajouter le curry.",
+      "Ajouter les lentilles corail et les tomates.",
+      "Couvrir d'eau et cuire 20 min jusqu'à ce que les lentilles soient fondantes.",
+      "Ajouter le lait de coco et laisser épaissir.",
+      "Faire cuire le riz basmati.",
+      "Servir le dahl sur le riz."
+    ]
+  },
+  {
+    id: 116,
+    nom: "Gnocchis à la sauce tomate",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 20,
+    tags: ["vegetarien", "rapide"],
+    ingredients: [
+      { nom: "Gnocchis", quantite: 200, unite: "g", rayon: "epicerie" },
+      { nom: "Sauce tomate", quantite: 150, unite: "g", rayon: "epicerie" },
+      { nom: "Mozzarella", quantite: 50, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Basilic", quantite: 5, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Parmesan", quantite: 20, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Faire cuire les gnocchis selon les instructions (ils remontent à la surface quand ils sont cuits).",
+      "Réchauffer la sauce tomate dans une poêle.",
+      "Égoutter les gnocchis et les ajouter à la sauce.",
+      "Ajouter la mozzarella en morceaux et mélanger.",
+      "Parsemer de basilic ciselé et de parmesan.",
+      "Servir immédiatement."
+    ]
+  },
+  {
+    id: 117,
+    nom: "Tarte aux poireaux",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 50,
+    tags: ["vegetarien"],
+    ingredients: [
+      { nom: "Pâte brisée", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Poireaux", quantite: 200, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Crème fraîche", quantite: 80, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Gruyère râpé", quantite: 40, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Préchauffer le four à 180°C.",
+      "Émincer les poireaux et les faire fondre au beurre 15 min.",
+      "Foncer un moule avec la pâte, piquer le fond.",
+      "Battre les oeufs avec la crème, saler et poivrer.",
+      "Disposer les poireaux sur la pâte, verser l'appareil, parsemer de gruyère.",
+      "Enfourner 30-35 min jusqu'à ce que la tarte soit dorée."
+    ]
+  },
+  {
+    id: 118,
+    nom: "Pad thaï végétarien",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 25,
+    tags: ["vegetarien", "rapide"],
+    ingredients: [
+      { nom: "Nouilles de riz", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Tofu", quantite: 80, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Carottes", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Sauce soja", quantite: 20, unite: "ml", rayon: "epicerie" },
+      { nom: "Cacahuètes", quantite: 20, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire tremper les nouilles de riz selon les instructions.",
+      "Couper le tofu en dés et le faire dorer à la poêle.",
+      "Ajouter les carottes râpées, faire sauter 2 min.",
+      "Ajouter les nouilles égouttées et la sauce soja.",
+      "Pousser sur le côté, brouiller les oeufs dans la poêle puis mélanger.",
+      "Servir parsemé de cacahuètes concassées."
+    ]
+  },
+  {
+    id: 119,
+    nom: "Soupe miso aux légumes",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 20,
+    tags: ["vegetarien", "leger", "rapide"],
+    ingredients: [
+      { nom: "Pâte miso", quantite: 25, unite: "g", rayon: "epicerie" },
+      { nom: "Tofu", quantite: 80, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Champignons de Paris", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Poireaux", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Algues wakame", quantite: 5, unite: "g", rayon: "epicerie" },
+      { nom: "Riz", quantite: 80, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire cuire le riz.",
+      "Porter 500ml d'eau à ébullition.",
+      "Ajouter les champignons émincés et le poireau en fines rondelles.",
+      "Cuire 5 min à feu doux.",
+      "Hors du feu, délayer la pâte miso dans un peu de bouillon puis l'incorporer.",
+      "Ajouter le tofu en dés et les algues. Servir avec le riz."
+    ]
+  },
+  {
+    id: 120,
+    nom: "Wraps aux légumes grillés",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 25,
+    tags: ["vegetarien", "rapide"],
+    ingredients: [
+      { nom: "Tortilla de blé", quantite: 2, unite: "pièces", rayon: "epicerie" },
+      { nom: "Courgettes", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Poivrons", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Aubergines", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Fromage frais", quantite: 50, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Huile d'olive", quantite: 15, unite: "ml", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Couper tous les légumes en lanières.",
+      "Les faire griller à la poêle avec l'huile d'olive jusqu'à ce qu'ils soient tendres.",
+      "Assaisonner de sel, poivre et herbes de Provence.",
+      "Réchauffer les tortillas.",
+      "Tartiner de fromage frais, garnir de légumes grillés.",
+      "Rouler les wraps et servir."
+    ]
+  },
+
+  // =====================
+  // NOUVELLES RECETTES - PLATS COMPLETS
+  // =====================
+  {
+    id: 121,
+    nom: "Jambalaya",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 45,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Riz rond", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Cuisses de poulet", quantite: 100, unite: "g", rayon: "viandes" },
+      { nom: "Saucisses", quantite: 80, unite: "g", rayon: "viandes" },
+      { nom: "Crevettes", quantite: 60, unite: "g", rayon: "poissonnerie" },
+      { nom: "Poivrons", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Tomates pelées", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Oignons", quantite: 50, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Faire dorer les morceaux de poulet et les saucisses coupées.",
+      "Ajouter les oignons et poivrons émincés.",
+      "Ajouter le riz et le faire nacrer.",
+      "Ajouter les tomates et le double de volume d'eau.",
+      "Cuire 20 min à couvert.",
+      "Ajouter les crevettes 5 min avant la fin et mélanger."
+    ]
+  },
+  {
+    id: 122,
+    nom: "Gratin de chou-fleur au jambon",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 40,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Chou-fleur", quantite: 250, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Jambon blanc", quantite: 80, unite: "g", rayon: "viandes" },
+      { nom: "Béchamel", quantite: 150, unite: "ml", rayon: "epicerie" },
+      { nom: "Gruyère râpé", quantite: 50, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Muscade", quantite: 1, unite: "pincée", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Préchauffer le four à 200°C.",
+      "Cuire le chou-fleur en bouquets à la vapeur ou à l'eau 10-15 min.",
+      "Couper le jambon en dés.",
+      "Préparer ou réchauffer la béchamel, ajouter la muscade.",
+      "Disposer le chou-fleur et le jambon dans un plat, napper de béchamel.",
+      "Parsemer de gruyère et enfourner 20 min."
+    ]
+  },
+  {
+    id: 123,
+    nom: "Riz cantonais",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 25,
+    tags: ["rapide", "copieux"],
+    ingredients: [
+      { nom: "Riz", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Jambon blanc", quantite: 60, unite: "g", rayon: "viandes" },
+      { nom: "Petits pois", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Crevettes", quantite: 50, unite: "g", rayon: "poissonnerie" },
+      { nom: "Sauce soja", quantite: 15, unite: "ml", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire cuire le riz et le laisser refroidir (idéalement de la veille).",
+      "Battre les oeufs en omelette dans le wok, les brouiller et réserver.",
+      "Faire sauter les crevettes et le jambon en dés.",
+      "Ajouter le riz froid et les petits pois, faire sauter à feu vif.",
+      "Ajouter les oeufs et la sauce soja.",
+      "Bien mélanger et servir chaud."
+    ]
+  },
+  {
+    id: 124,
+    nom: "Quiche lorraine",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 50,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Pâte brisée", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Lardons", quantite: 80, unite: "g", rayon: "viandes" },
+      { nom: "Crème fraîche", quantite: 100, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Oeufs", quantite: 2, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Gruyère râpé", quantite: 40, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Salade verte", quantite: 50, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Préchauffer le four à 180°C.",
+      "Foncer un moule avec la pâte et piquer le fond.",
+      "Faire revenir les lardons et les disposer sur la pâte.",
+      "Battre les oeufs avec la crème, saler, poivrer, ajouter le gruyère.",
+      "Verser sur les lardons.",
+      "Enfourner 35-40 min. Servir tiède avec la salade."
+    ]
+  },
+  {
+    id: 125,
+    nom: "Ramen au poulet",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 35,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Nouilles de riz", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Cuisses de poulet", quantite: 120, unite: "g", rayon: "viandes" },
+      { nom: "Bouillon de volaille", quantite: 400, unite: "ml", rayon: "epicerie" },
+      { nom: "Oeufs", quantite: 1, unite: "pièce", rayon: "produits-laitiers" },
+      { nom: "Champignons de Paris", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Sauce soja", quantite: 15, unite: "ml", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire cuire l'oeuf mollet (6 min dans l'eau bouillante), le refroidir et l'écaler.",
+      "Pocher le poulet dans le bouillon 15-20 min, puis l'émincer.",
+      "Cuire les nouilles selon les instructions.",
+      "Émincer et faire sauter les champignons.",
+      "Disposer les nouilles dans un bol, ajouter le bouillon chaud.",
+      "Garnir de poulet, champignons et oeuf mollet coupé en deux."
+    ]
+  },
+  {
+    id: 126,
+    nom: "Pâtes au pesto et poulet",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 20,
+    tags: ["rapide"],
+    ingredients: [
+      { nom: "Pennes", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Blanc de poulet cuit", quantite: 100, unite: "g", rayon: "viandes" },
+      { nom: "Pesto", quantite: 40, unite: "g", rayon: "epicerie" },
+      { nom: "Tomates cerises", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Parmesan", quantite: 20, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Faire cuire les pâtes al dente.",
+      "Couper le poulet en lanières et les tomates en deux.",
+      "Égoutter les pâtes en gardant un peu d'eau de cuisson.",
+      "Mélanger les pâtes avec le pesto et un peu d'eau de cuisson.",
+      "Ajouter le poulet et les tomates.",
+      "Servir avec le parmesan râpé."
+    ]
+  },
+  {
+    id: 127,
+    nom: "Tourte au poulet et champignons",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 60,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Pâte feuilletée", quantite: 150, unite: "g", rayon: "epicerie" },
+      { nom: "Cuisses de poulet", quantite: 150, unite: "g", rayon: "viandes" },
+      { nom: "Champignons de Paris", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Crème fraîche", quantite: 80, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Oeufs", quantite: 1, unite: "pièce", rayon: "produits-laitiers" },
+      { nom: "Oignons", quantite: 50, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Préchauffer le four à 200°C.",
+      "Faire revenir l'oignon et les champignons, ajouter le poulet coupé en dés.",
+      "Ajouter la crème, saler, poivrer et laisser épaissir.",
+      "Foncer un moule avec la moitié de la pâte.",
+      "Garnir de la préparation, recouvrir avec l'autre moitié de pâte.",
+      "Dorer à l'oeuf et enfourner 30-35 min."
+    ]
+  },
+  {
+    id: 128,
+    nom: "Salade César au poulet",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 20,
+    tags: ["leger", "rapide"],
+    ingredients: [
+      { nom: "Salade romaine", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Blanc de poulet cuit", quantite: 100, unite: "g", rayon: "viandes" },
+      { nom: "Parmesan", quantite: 30, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Pain", quantite: 50, unite: "g", rayon: "boulangerie" },
+      { nom: "Sauce César", quantite: 40, unite: "ml", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Couper le pain en cubes et les faire dorer à la poêle pour faire des croûtons.",
+      "Laver et essorer la salade, la couper en morceaux.",
+      "Émincer le poulet en tranches.",
+      "Disposer la salade dans un saladier, ajouter le poulet.",
+      "Parsemer de copeaux de parmesan et de croûtons.",
+      "Arroser de sauce César et servir."
+    ]
+  },
+  {
+    id: 129,
+    nom: "Endives au jambon gratinées",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 50,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Endives", quantite: 200, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Jambon blanc", quantite: 80, unite: "g", rayon: "viandes" },
+      { nom: "Béchamel", quantite: 150, unite: "ml", rayon: "epicerie" },
+      { nom: "Gruyère râpé", quantite: 50, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 15, unite: "g", rayon: "produits-laitiers" }
+    ],
+    etapes: [
+      "Préchauffer le four à 200°C.",
+      "Faire braiser les endives dans le beurre à couvert pendant 20 min.",
+      "Enrouler chaque endive dans une tranche de jambon.",
+      "Disposer dans un plat à gratin.",
+      "Napper de béchamel et parsemer de gruyère.",
+      "Enfourner 20-25 min jusqu'à gratinage."
+    ]
+  },
+  {
+    id: 130,
+    nom: "Tortilla espagnole",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 35,
+    tags: ["vegetarien", "copieux"],
+    ingredients: [
+      { nom: "Oeufs", quantite: 4, unite: "pièces", rayon: "produits-laitiers" },
+      { nom: "Pommes de terre", quantite: 200, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Oignons", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Huile d'olive", quantite: 40, unite: "ml", rayon: "epicerie" },
+      { nom: "Salade verte", quantite: 50, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Éplucher et couper les pommes de terre en fines rondelles.",
+      "Les faire cuire dans l'huile d'olive avec l'oignon émincé jusqu'à ce qu'elles soient tendres.",
+      "Battre les oeufs, saler et poivrer.",
+      "Égoutter les pommes de terre et les mélanger aux oeufs.",
+      "Verser dans une poêle et cuire 5 min de chaque côté.",
+      "Servir en parts avec une salade verte."
+    ]
+  }
+];
+
+// Liste de tous les ingrédients possibles (pour les exclusions)
+const ALL_INGREDIENTS = [...new Set(RECIPES.flatMap(r => r.ingredients.map(i => i.nom)))].sort();
+
+// Catégories de rayons pour l'organisation de la liste de courses
+const RAYONS = {
+  "fruits-legumes": "Fruits et Légumes",
+  "viandes": "Boucherie / Viandes",
+  "poissonnerie": "Poissonnerie",
+  "produits-laitiers": "Produits Laitiers",
+  "boulangerie": "Boulangerie",
+  "epicerie": "Épicerie",
+  "boissons": "Boissons",
+  "surgeles": "Surgelés"
+};
+
+// Prix des ingrédients en euros (prix moyens Haute-Loire / France rurale)
+// Les prix sont donnés par unité de base selon l'ingrédient
+const PRIX_INGREDIENTS = {
+  // Boulangerie
+  "Pain de mie": { prixBase: 1.50, uniteBase: "paquet", qteParUnite: 20, uniteRecette: "tranches" },
+  "Croissants": { prixBase: 1.20, uniteBase: "pièce", qteParUnite: 1, uniteRecette: "pièces" },
+  "Pain rassis": { prixBase: 0.50, uniteBase: "pièce", qteParUnite: 10, uniteRecette: "tranches" },
+  "Pain complet": { prixBase: 2.50, uniteBase: "pièce", qteParUnite: 20, uniteRecette: "tranches" },
+  "Brioche": { prixBase: 3.00, uniteBase: "pièce", qteParUnite: 12, uniteRecette: "tranches" },
+  "Pain": { prixBase: 1.20, uniteBase: "pièce", qteParUnite: 250, uniteRecette: "g" },
+  "Baguette": { prixBase: 1.20, uniteBase: "pièce", qteParUnite: 1, uniteRecette: "pièce" },
+  "Pain de campagne": { prixBase: 3.50, uniteBase: "pièce", qteParUnite: 500, uniteRecette: "g" },
+  "Pain pita": { prixBase: 2.00, uniteBase: "paquet", qteParUnite: 6, uniteRecette: "pièce" },
+  
+  // Produits laitiers
+  "Beurre": { prixBase: 2.50, uniteBase: "plaquette", qteParUnite: 250, uniteRecette: "g" },
+  "Oeufs": { prixBase: 3.50, uniteBase: "boîte", qteParUnite: 12, uniteRecette: "pièce" },
+  "Lait": { prixBase: 1.20, uniteBase: "litre", qteParUnite: 1000, uniteRecette: "ml" },
+  "Yaourt nature": { prixBase: 2.00, uniteBase: "lot", qteParUnite: 500, uniteRecette: "g" },
+  "Crème fraîche": { prixBase: 1.80, uniteBase: "pot", qteParUnite: 200, uniteRecette: "ml" },
+  "Fromage blanc": { prixBase: 2.00, uniteBase: "pot", qteParUnite: 500, uniteRecette: "g" },
+  "Gruyère râpé": { prixBase: 2.50, uniteBase: "sachet", qteParUnite: 200, uniteRecette: "g" },
+  "Parmesan": { prixBase: 3.50, uniteBase: "pièce", qteParUnite: 150, uniteRecette: "g" },
+  "Reblochon": { prixBase: 7.00, uniteBase: "pièce", qteParUnite: 250, uniteRecette: "g" },
+  "Mozzarella": { prixBase: 1.50, uniteBase: "boule", qteParUnite: 125, uniteRecette: "g" },
+  "Ricotta": { prixBase: 2.50, uniteBase: "pot", qteParUnite: 250, uniteRecette: "g" },
+  "Fromage de chèvre": { prixBase: 2.50, uniteBase: "bûche", qteParUnite: 150, uniteRecette: "g" },
+  "Fromage frais": { prixBase: 2.00, uniteBase: "pot", qteParUnite: 200, uniteRecette: "g" },
+  "Comté": { prixBase: 18.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  
+  // Fruits et légumes
+  "Banane": { prixBase: 0.25, uniteBase: "pièce", qteParUnite: 1, uniteRecette: "pièce" },
+  "Avocat": { prixBase: 1.50, uniteBase: "pièce", qteParUnite: 1, uniteRecette: "pièce" },
+  "Fraises": { prixBase: 4.00, uniteBase: "barquette", qteParUnite: 250, uniteRecette: "g" },
+  "Pommes de terre": { prixBase: 1.50, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Pommes de terre (frites)": { prixBase: 1.50, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Pommes de terre grenaille": { prixBase: 2.50, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Pommes de terre vapeur": { prixBase: 1.50, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Carottes": { prixBase: 1.50, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Oignons": { prixBase: 1.80, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Oignons grelots": { prixBase: 3.00, uniteBase: "barquette", qteParUnite: 250, uniteRecette: "g" },
+  "Ail": { prixBase: 0.30, uniteBase: "tête", qteParUnite: 8, uniteRecette: "gousse" },
+  "Échalotes": { prixBase: 4.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Courgettes": { prixBase: 2.50, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Tomates": { prixBase: 3.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Tomates cerises": { prixBase: 3.50, uniteBase: "barquette", qteParUnite: 250, uniteRecette: "g" },
+  "Poivrons": { prixBase: 4.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Aubergines": { prixBase: 3.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Champignons de Paris": { prixBase: 3.50, uniteBase: "barquette", qteParUnite: 250, uniteRecette: "g" },
+  "Haricots verts": { prixBase: 3.50, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Petits pois": { prixBase: 2.50, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Épinards": { prixBase: 3.00, uniteBase: "sachet", qteParUnite: 300, uniteRecette: "g" },
+  "Salade verte": { prixBase: 1.50, uniteBase: "pièce", qteParUnite: 200, uniteRecette: "g" },
+  "Poireaux": { prixBase: 2.50, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Navets": { prixBase: 2.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Céleri": { prixBase: 2.00, uniteBase: "pièce", qteParUnite: 300, uniteRecette: "g" },
+  "Concombre": { prixBase: 1.00, uniteBase: "pièce", qteParUnite: 300, uniteRecette: "g" },
+  "Citron": { prixBase: 0.40, uniteBase: "pièce", qteParUnite: 1, uniteRecette: "pièce" },
+  "Pommes": { prixBase: 2.50, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Ciboulette": { prixBase: 1.50, uniteBase: "botte", qteParUnite: 30, uniteRecette: "g" },
+  "Persil": { prixBase: 1.00, uniteBase: "botte", qteParUnite: 30, uniteRecette: "g" },
+  "Basilic": { prixBase: 2.00, uniteBase: "pot", qteParUnite: 30, uniteRecette: "g" },
+  "Aneth": { prixBase: 2.00, uniteBase: "botte", qteParUnite: 30, uniteRecette: "g" },
+  "Bouquet garni": { prixBase: 1.00, uniteBase: "sachet", qteParUnite: 3, uniteRecette: "pièce" },
+  
+  // Viandes
+  "Cuisses de poulet": { prixBase: 6.50, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Escalope de dinde": { prixBase: 9.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Blanc de poulet cuit": { prixBase: 15.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Steak haché": { prixBase: 10.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Boeuf haché": { prixBase: 10.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Boeuf (bourguignon)": { prixBase: 14.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Boeuf (rumsteck)": { prixBase: 22.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Boeuf (paleron)": { prixBase: 14.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Veau (épaule)": { prixBase: 18.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Escalope de veau": { prixBase: 25.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Côtes de porc": { prixBase: 8.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Rôti de porc": { prixBase: 10.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Lardons": { prixBase: 3.00, uniteBase: "barquette", qteParUnite: 200, uniteRecette: "g" },
+  "Saucisses de Toulouse": { prixBase: 8.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Saucisse de Strasbourg": { prixBase: 7.00, uniteBase: "lot", qteParUnite: 400, uniteRecette: "g" },
+  "Jambon blanc": { prixBase: 12.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Jambon blanc (épais)": { prixBase: 14.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Jambon de Bayonne": { prixBase: 30.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Lard fumé": { prixBase: 10.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Magret de canard": { prixBase: 22.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Confit de canard": { prixBase: 25.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Cordon bleu": { prixBase: 2.00, uniteBase: "pièce", qteParUnite: 1, uniteRecette: "pièce" },
+  "Os à moelle": { prixBase: 1.50, uniteBase: "pièce", qteParUnite: 1, uniteRecette: "pièce" },
+  "Bacon": { prixBase: 3.50, uniteBase: "barquette", qteParUnite: 200, uniteRecette: "g" },
+  "Saucisses": { prixBase: 8.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Jambon sec": { prixBase: 35.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Saucisson": { prixBase: 20.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Rillettes": { prixBase: 12.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  
+  // Poissonnerie
+  "Pavé de saumon": { prixBase: 20.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Filet de cabillaud": { prixBase: 16.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Sardines fraîches": { prixBase: 8.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Morue dessalée": { prixBase: 15.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Crevettes": { prixBase: 18.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Filet de truite": { prixBase: 14.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Moules": { prixBase: 5.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Dos de lieu noir": { prixBase: 12.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Filet de colin": { prixBase: 14.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Steak de thon": { prixBase: 25.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Filet de sole": { prixBase: 30.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Gambas": { prixBase: 25.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Saumon fumé": { prixBase: 35.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  
+  // Épicerie
+  "Confiture": { prixBase: 2.50, uniteBase: "pot", qteParUnite: 350, uniteRecette: "g" },
+  "Flocons d'avoine": { prixBase: 2.00, uniteBase: "paquet", qteParUnite: 500, uniteRecette: "g" },
+  "Miel": { prixBase: 6.00, uniteBase: "pot", qteParUnite: 500, uniteRecette: "g" },
+  "Muesli": { prixBase: 3.50, uniteBase: "paquet", qteParUnite: 500, uniteRecette: "g" },
+  "Sucre": { prixBase: 1.50, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Farine": { prixBase: 1.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Farine de sarrasin": { prixBase: 3.00, uniteBase: "paquet", qteParUnite: 500, uniteRecette: "g" },
+  "Levure chimique": { prixBase: 1.00, uniteBase: "sachet", qteParUnite: 50, uniteRecette: "g" },
+  "Sirop d'érable": { prixBase: 8.00, uniteBase: "bouteille", qteParUnite: 250, uniteRecette: "ml" },
+  "Cacao en poudre": { prixBase: 3.00, uniteBase: "boîte", qteParUnite: 250, uniteRecette: "g" },
+  "Sel": { prixBase: 0.60, uniteBase: "paquet", qteParUnite: 1000, uniteRecette: "g" },
+  "Gros sel": { prixBase: 1.00, uniteBase: "paquet", qteParUnite: 1000, uniteRecette: "g" },
+  "Poivre": { prixBase: 2.50, uniteBase: "moulin", qteParUnite: 50, uniteRecette: "g" },
+  "Herbes de Provence": { prixBase: 2.00, uniteBase: "pot", qteParUnite: 50, uniteRecette: "g" },
+  "Muscade": { prixBase: 3.00, uniteBase: "pot", qteParUnite: 30, uniteRecette: "pincée" },
+  "Curry": { prixBase: 2.50, uniteBase: "pot", qteParUnite: 50, uniteRecette: "g" },
+  "Cumin": { prixBase: 2.50, uniteBase: "pot", qteParUnite: 50, uniteRecette: "g" },
+  "Piment": { prixBase: 2.50, uniteBase: "pot", qteParUnite: 50, uniteRecette: "g" },
+  "Piment d'Espelette": { prixBase: 5.00, uniteBase: "pot", qteParUnite: 40, uniteRecette: "g" },
+  "Ras el hanout": { prixBase: 3.00, uniteBase: "pot", qteParUnite: 50, uniteRecette: "g" },
+  "Harissa": { prixBase: 2.50, uniteBase: "tube", qteParUnite: 70, uniteRecette: "g" },
+  "Origan": { prixBase: 2.00, uniteBase: "pot", qteParUnite: 30, uniteRecette: "g" },
+  "Safran": { prixBase: 5.00, uniteBase: "sachet", qteParUnite: 0.5, uniteRecette: "g" },
+  "Baies de genièvre": { prixBase: 3.00, uniteBase: "pot", qteParUnite: 30, uniteRecette: "pièces" },
+  "Vinaigre": { prixBase: 1.50, uniteBase: "bouteille", qteParUnite: 500, uniteRecette: "ml" },
+  "Cornichons": { prixBase: 2.50, uniteBase: "bocal", qteParUnite: 200, uniteRecette: "g" },
+  "Huile d'olive": { prixBase: 6.00, uniteBase: "bouteille", qteParUnite: 750, uniteRecette: "ml" },
+  "Huile": { prixBase: 3.00, uniteBase: "bouteille", qteParUnite: 1000, uniteRecette: "ml" },
+  "Huile de friture": { prixBase: 3.00, uniteBase: "bouteille", qteParUnite: 1000, uniteRecette: "ml" },
+  "Riz": { prixBase: 2.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Riz basmati": { prixBase: 3.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Riz arborio": { prixBase: 4.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Riz rond": { prixBase: 2.50, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Spaghetti": { prixBase: 1.50, uniteBase: "paquet", qteParUnite: 500, uniteRecette: "g" },
+  "Pennes": { prixBase: 1.50, uniteBase: "paquet", qteParUnite: 500, uniteRecette: "g" },
+  "Macaroni": { prixBase: 1.50, uniteBase: "paquet", qteParUnite: 500, uniteRecette: "g" },
+  "Feuilles de lasagne": { prixBase: 2.50, uniteBase: "paquet", qteParUnite: 250, uniteRecette: "g" },
+  "Semoule de couscous": { prixBase: 2.00, uniteBase: "paquet", qteParUnite: 500, uniteRecette: "g" },
+  "Lentilles vertes": { prixBase: 3.00, uniteBase: "paquet", qteParUnite: 500, uniteRecette: "g" },
+  "Pâte brisée": { prixBase: 2.00, uniteBase: "rouleau", qteParUnite: 250, uniteRecette: "g" },
+  "Pâte à pizza": { prixBase: 2.00, uniteBase: "rouleau", qteParUnite: 300, uniteRecette: "g" },
+  "Tortilla de blé": { prixBase: 2.50, uniteBase: "paquet", qteParUnite: 6, uniteRecette: "pièce" },
+  "Chapelure": { prixBase: 1.50, uniteBase: "paquet", qteParUnite: 250, uniteRecette: "g" },
+  "Sauce tomate": { prixBase: 1.50, uniteBase: "pot", qteParUnite: 400, uniteRecette: "g" },
+  "Tomates pelées": { prixBase: 1.20, uniteBase: "boîte", qteParUnite: 400, uniteRecette: "g" },
+  "Sauce soja": { prixBase: 3.00, uniteBase: "bouteille", qteParUnite: 250, uniteRecette: "ml" },
+  "Lait de coco": { prixBase: 2.00, uniteBase: "boîte", qteParUnite: 400, uniteRecette: "ml" },
+  "Bouillon de volaille": { prixBase: 2.00, uniteBase: "boîte", qteParUnite: 1000, uniteRecette: "ml" },
+  "Bouillon de légumes": { prixBase: 2.00, uniteBase: "boîte", qteParUnite: 1000, uniteRecette: "ml" },
+  "Bouillon de boeuf": { prixBase: 2.00, uniteBase: "boîte", qteParUnite: 1000, uniteRecette: "ml" },
+  "Pois chiches (conserve)": { prixBase: 1.50, uniteBase: "boîte", qteParUnite: 400, uniteRecette: "g" },
+  "Haricots blancs (conserve)": { prixBase: 1.50, uniteBase: "boîte", qteParUnite: 400, uniteRecette: "g" },
+  "Haricots rouges (conserve)": { prixBase: 1.50, uniteBase: "boîte", qteParUnite: 400, uniteRecette: "g" },
+  "Maïs": { prixBase: 1.50, uniteBase: "boîte", qteParUnite: 300, uniteRecette: "g" },
+  "Thon (conserve)": { prixBase: 2.50, uniteBase: "boîte", qteParUnite: 150, uniteRecette: "g" },
+  "Olives noires": { prixBase: 2.50, uniteBase: "bocal", qteParUnite: 200, uniteRecette: "g" },
+  "Pruneaux": { prixBase: 4.00, uniteBase: "sachet", qteParUnite: 500, uniteRecette: "g" },
+  "Amandes effilées": { prixBase: 3.50, uniteBase: "sachet", qteParUnite: 125, uniteRecette: "g" },
+  "Noix": { prixBase: 6.00, uniteBase: "sachet", qteParUnite: 250, uniteRecette: "g" },
+  "Tahini": { prixBase: 4.00, uniteBase: "pot", qteParUnite: 300, uniteRecette: "g" },
+  "Vinaigrette": { prixBase: 2.50, uniteBase: "bouteille", qteParUnite: 500, uniteRecette: "ml" },
+  "Sauce yaourt": { prixBase: 2.00, uniteBase: "pot", qteParUnite: 200, uniteRecette: "g" },
+  "Choucroute": { prixBase: 2.50, uniteBase: "bocal", qteParUnite: 500, uniteRecette: "g" },
+  
+  // Boissons
+  "Jus d'orange": { prixBase: 2.00, uniteBase: "litre", qteParUnite: 1000, uniteRecette: "ml" },
+  "Vin rouge": { prixBase: 5.00, uniteBase: "bouteille", qteParUnite: 750, uniteRecette: "ml" },
+  "Vin blanc": { prixBase: 5.00, uniteBase: "bouteille", qteParUnite: 750, uniteRecette: "ml" },
+  "Bière": { prixBase: 2.00, uniteBase: "bouteille", qteParUnite: 330, uniteRecette: "ml" },
+  
+  // Nouveaux ingrédients ajoutés
+  "Cannelle": { prixBase: 2.50, uniteBase: "pot", qteParUnite: 50, uniteRecette: "pincée" },
+  "Beurre de cacahuète": { prixBase: 4.00, uniteBase: "pot", qteParUnite: 350, uniteRecette: "g" },
+  "Gingembre": { prixBase: 0.50, uniteBase: "pièce", qteParUnite: 30, uniteRecette: "g" },
+  "Côtelettes d'agneau": { prixBase: 20.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Moutarde": { prixBase: 2.00, uniteBase: "pot", qteParUnite: 200, uniteRecette: "g" },
+  "Pâte feuilletée": { prixBase: 2.50, uniteBase: "rouleau", qteParUnite: 250, uniteRecette: "g" },
+  "Paprika": { prixBase: 2.50, uniteBase: "pot", qteParUnite: 50, uniteRecette: "g" },
+  "Bavette de boeuf": { prixBase: 18.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Filet de bar": { prixBase: 25.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Blanc d'oeuf": { prixBase: 0.30, uniteBase: "pièce", qteParUnite: 1, uniteRecette: "pièce" },
+  "Filet de dorade": { prixBase: 22.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
+  "Chou blanc": { prixBase: 1.50, uniteBase: "pièce", qteParUnite: 500, uniteRecette: "g" },
+  "Chou rouge": { prixBase: 2.00, uniteBase: "pièce", qteParUnite: 500, uniteRecette: "g" },
+  "Lentilles corail": { prixBase: 3.50, uniteBase: "paquet", qteParUnite: 500, uniteRecette: "g" },
+  "Gnocchis": { prixBase: 2.50, uniteBase: "paquet", qteParUnite: 500, uniteRecette: "g" },
+  "Pâte miso": { prixBase: 4.00, uniteBase: "pot", qteParUnite: 200, uniteRecette: "g" },
+  "Algues wakame": { prixBase: 3.00, uniteBase: "sachet", qteParUnite: 50, uniteRecette: "g" },
+  "Tofu": { prixBase: 2.50, uniteBase: "bloc", qteParUnite: 400, uniteRecette: "g" },
+  "Nouilles de riz": { prixBase: 2.50, uniteBase: "paquet", qteParUnite: 400, uniteRecette: "g" },
+  "Cacahuètes": { prixBase: 3.00, uniteBase: "sachet", qteParUnite: 250, uniteRecette: "g" },
+  "Chou-fleur": { prixBase: 2.50, uniteBase: "pièce", qteParUnite: 600, uniteRecette: "g" },
+  "Béchamel": { prixBase: 2.00, uniteBase: "brique", qteParUnite: 500, uniteRecette: "ml" },
+  "Pesto": { prixBase: 3.50, uniteBase: "pot", qteParUnite: 190, uniteRecette: "g" },
+  "Salade romaine": { prixBase: 1.80, uniteBase: "pièce", qteParUnite: 300, uniteRecette: "g" },
+  "Sauce César": { prixBase: 3.00, uniteBase: "bouteille", qteParUnite: 250, uniteRecette: "ml" },
+  "Endives": { prixBase: 3.50, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" }
+};
+
+// Fonction pour calculer le prix d'une recette par personne
+function calculerPrixRecette(recipe, nbPersonnes = 1) {
+  let prixTotal = 0;
+  
+  recipe.ingredients.forEach(ing => {
+    const prixInfo = PRIX_INGREDIENTS[ing.nom];
+    if (prixInfo) {
+      const qteTotale = ing.quantite * nbPersonnes;
+      const prixUnitaire = prixInfo.prixBase / prixInfo.qteParUnite;
+      prixTotal += qteTotale * prixUnitaire;
+    } else {
+      // Prix par défaut si ingrédient non trouvé
+      prixTotal += 0.50 * nbPersonnes;
+    }
+  });
+  
+  return Math.round(prixTotal * 100) / 100;
+}
+
+// Export pour utilisation dans app.js
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { RECIPES, ALL_INGREDIENTS, RAYONS, PRIX_INGREDIENTS, calculerPrixRecette };
+}
