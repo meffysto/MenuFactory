@@ -7,6 +7,7 @@ let state = {
   petitDejeuner: true,
   dejeuner: true,
   diner: true,
+  dessert: true, // Ajout de la gestion des desserts
   budget: 2,
   // Nouvelles préférences
   pdejType: 'all', // 'all', 'proteine', 'sucre'
@@ -154,6 +155,11 @@ function toggleIngredient(ingredient) {
     state.excludedIngredients.push(ingredient);
   }
   renderIngredientsList();
+  
+  // Si un menu a déjà été généré, le régénérer avec les nouveaux critères
+  if (state.generatedMenu.length > 0) {
+    generateMenu();
+  }
 }
 
 function filterIngredients(search) {
@@ -177,6 +183,7 @@ function generateMenu() {
   state.petitDejeuner = document.getElementById('petitDejeuner').checked;
   state.dejeuner = document.getElementById('dejeuner').checked;
   state.diner = document.getElementById('diner').checked;
+  state.dessert = document.getElementById('dessert').checked; // Ajout de la gestion des desserts
   state.budget = parseInt(document.querySelector('input[name="budget"]:checked').value);
   
   // Récupérer les préférences alimentaires
@@ -186,7 +193,7 @@ function generateMenu() {
   state.prefRapide = document.getElementById('prefRapide')?.checked || false;
 
   // Vérifier qu'au moins un type de repas est sélectionné
-  if (!state.petitDejeuner && !state.dejeuner && !state.diner) {
+  if (!state.petitDejeuner && !state.dejeuner && !state.diner && !state.dessert) {
     showToast('Veuillez sélectionner au moins un type de repas');
     return;
   }
@@ -194,10 +201,12 @@ function generateMenu() {
   // Filtrer les recettes disponibles
   const petitsDejeuners = getAvailableRecipes('petit-dejeuner');
   const plats = getAvailableRecipes('plat');
+  const desserts = getAvailableRecipes('dessert'); // Ajout de la récupération des desserts
 
   // Vérifier qu'il y a assez de recettes
   const neededPD = state.petitDejeuner ? state.nbJours : 0;
   const neededPlats = (state.dejeuner ? state.nbJours : 0) + (state.diner ? state.nbJours : 0);
+  const neededDesserts = state.dessert ? state.nbJours : 0; // Ajout du nombre de desserts nécessaires
 
   if (petitsDejeuners.length === 0 && state.petitDejeuner) {
     showToast('Aucun petit-déjeuner disponible avec vos critères');
@@ -207,15 +216,20 @@ function generateMenu() {
     showToast('Aucun plat disponible avec vos critères');
     return;
   }
+  if (desserts.length === 0 && state.dessert) { // Vérification pour les desserts
+    showToast('Aucun dessert disponible avec vos critères');
+    return;
+  }
 
   // Générer le menu
   state.generatedMenu = [];
   const usedPDIds = [];
   const usedPlatIds = [];
+  const usedDessertIds = []; // Ajout pour les desserts
 
   // Préparer les slots pour les favoris
   // Structure: { dayIndex, mealType: 'petit-dejeuner' | 'dejeuner' | 'diner', recipe }
-  const favoriteSlots = planFavoriteSlots(petitsDejeuners, plats);
+  const favoriteSlots = planFavoriteSlots(petitsDejeuners, plats, desserts);
 
   for (let i = 0; i < state.nbJours; i++) {
     const dayMenu = {
@@ -273,6 +287,22 @@ function generateMenu() {
       usedPlatIds.push(recipe.id);
     }
 
+    if (state.dessert) {
+      const favoriteSlot = favoriteSlots.find(s => s.dayIndex === i && s.mealType === 'dessert');
+      let recipe;
+      if (favoriteSlot) {
+        recipe = favoriteSlot.recipe;
+      } else {
+        recipe = pickRandomRecipe(desserts, usedDessertIds);
+      }
+      dayMenu.repas.push({
+        type: 'Dessert',
+        typeKey: 'dessert',
+        recipe: recipe
+      });
+      usedDessertIds.push(recipe.id);
+    }
+
     state.generatedMenu.push(dayMenu);
   }
 
@@ -288,13 +318,14 @@ function generateMenu() {
 }
 
 // Planifier les slots pour les favoris (1 par semaine de 7 jours)
-function planFavoriteSlots(petitsDejeuners, plats) {
+function planFavoriteSlots(petitsDejeuners, plats, desserts) {
   const slots = [];
   if (state.favoriteRecipes.length === 0) return slots;
 
   // Séparer les favoris par catégorie
   const favoritePD = [];
   const favoritePlats = [];
+  const favoriteDesserts = []; // Ajout pour les desserts
   
   state.favoriteRecipes.forEach(recipeId => {
     const recipe = getRecipeById(recipeId);
@@ -308,6 +339,10 @@ function planFavoriteSlots(petitsDejeuners, plats) {
     } else if (recipe.categorie === 'plat') {
       if ((state.dejeuner || state.diner) && plats.some(r => r.id === recipeId)) {
         favoritePlats.push(recipe);
+      }
+    } else if (recipe.categorie === 'dessert') { // Ajout pour les desserts
+      if (state.dessert && desserts.some(r => r.id === recipeId)) {
+        favoriteDesserts.push(recipe);
       }
     }
   });
@@ -366,6 +401,24 @@ function planFavoriteSlots(petitsDejeuners, plats) {
         }
       }
     });
+    
+    // Placer les favoris desserts
+    if (state.dessert) {
+      favoriteDesserts.forEach(recipe => {
+        if (availableDays.length > 0) {
+          // Trouver un jour disponible
+          for (const dayIndex of availableDays) {
+            // Vérifier si on peut placer un dessert (pas de conflit de repas)
+            const canPlace = !slots.some(s => s.dayIndex === dayIndex && s.mealType === 'dessert');
+            
+            if (canPlace) {
+              slots.push({ dayIndex, mealType: 'dessert', recipe });
+              break;
+            }
+          }
+        }
+      });
+    }
   }
   
   return slots;
@@ -408,8 +461,21 @@ function getAvailableRecipes(categorie) {
       }
     }
 
+    // Pour les desserts, on applique certaines préférences
+    if (categorie === 'dessert') {
+      // Préférence faible en sucre - exclure les recettes avec tag "sucre"
+      if (state.prefLowSugar && tags.includes('sucre')) {
+        return false;
+      }
+      
+      // Préférence rapide - filtrer sur le temps de préparation
+      if (state.prefRapide && recipe.tempsPreparation > 20) {
+        return false;
+      }
+    }
+
     // Préférence faible en sucre - exclure les recettes avec tag "sucre"
-    if (state.prefLowSugar && tags.includes('sucre')) {
+    if (state.prefLowSugar && tags.includes('sucre') && categorie !== 'dessert') {
       return false;
     }
 
@@ -417,7 +483,7 @@ function getAvailableRecipes(categorie) {
     // (On ne filtre pas strictement, on gère ça dans le tri)
 
     // Préférence rapide - filtrer sur le temps de préparation
-    if (state.prefRapide && recipe.tempsPreparation > 20) {
+    if (state.prefRapide && recipe.tempsPreparation > 20 && categorie !== 'dessert') {
       return false;
     }
 
@@ -449,6 +515,15 @@ function sortRecipesByPreference(recipes) {
     if (state.prefRapide) {
       if (tagsA.includes('rapide')) scoreA += 1;
       if (tagsB.includes('rapide')) scoreB += 1;
+    }
+
+    // Pour les desserts, on peut aussi appliquer certaines préférences
+    // Par exemple, pour les préférences sucrées
+    if (a.categorie === 'dessert' && state.pdejType === 'sucre') {
+      scoreA += 1; // Léger bonus pour les desserts si on préfère les recettes sucrées
+    }
+    if (b.categorie === 'dessert' && state.pdejType === 'sucre') {
+      scoreB += 1;
     }
 
     return scoreB - scoreA; // Tri décroissant par score
@@ -527,7 +602,7 @@ function renderMenu() {
       dayTotal += mealPrice;
       const isFav = isFavorite(meal.recipe.id);
       const favClass = isFav ? 'active' : '';
-      const favIcon = isFav ? '&#9733;' : '&#9734;'; // ★ ou ☆
+      const favIcon = isFav ? '❤️' : '🤍'; // Cœur plein ou cœur vide
       const cardClass = isFav ? 'meal-card is-favorite' : 'meal-card';
       return `
         <div class="${cardClass}">
@@ -918,6 +993,7 @@ function savePreferences() {
     prefCopieux: state.prefCopieux,
     prefRapide: state.prefRapide,
     excludedIngredients: state.excludedIngredients,
+    dessert: state.dessert,
     favoriteRecipes: state.favoriteRecipes
   };
 
@@ -960,6 +1036,10 @@ function loadPreferences() {
       
       const prefRapide = document.getElementById('prefRapide');
       if (prefRapide) prefRapide.checked = state.prefRapide;
+      
+      // Appliquer l'état du dessert
+      const dessertCheckbox = document.getElementById('dessert');
+      if (dessertCheckbox) dessertCheckbox.checked = state.dessert;
 
     } catch (e) {
       console.error('Erreur chargement préférences:', e);
@@ -1105,9 +1185,9 @@ function renderFavoritesSection() {
   if (state.favoriteRecipes.length === 0) {
     container.innerHTML = `
       <div class="favorites-empty">
-        <span class="favorites-empty-icon">&#9734;</span>
+        <span class="favorites-empty-icon">🤍</span>
         <p>Aucune recette favorite</p>
-        <small>Générez un menu et cliquez sur l'étoile pour ajouter des favoris</small>
+        <small>Générez un menu et cliquez sur le cœur pour ajouter des favoris</small>
       </div>
     `;
     return;

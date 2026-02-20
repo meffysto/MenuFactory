@@ -1157,28 +1157,6 @@ const RECIPES = [
     ]
   },
   {
-    id: 33,
-    nom: "Sardines grillées",
-    categorie: "plat",
-    budget: 1,
-    tempsPreparation: 20,
-    tags: ["rapide", "leger"],
-    ingredients: [
-      { nom: "Sardines fraîches", quantite: 200, unite: "g", rayon: "poissonnerie" },
-      { nom: "Citron", quantite: 0.5, unite: "pièce", rayon: "fruits-legumes" },
-      { nom: "Huile d'olive", quantite: 15, unite: "ml", rayon: "epicerie" },
-      { nom: "Pain", quantite: 100, unite: "g", rayon: "boulangerie" },
-      { nom: "Tomates", quantite: 100, unite: "g", rayon: "fruits-legumes" }
-    ],
-    etapes: [
-      "Vider et écailler les sardines si nécessaire.",
-      "Les badigeonner d'huile d'olive, saler et poivrer.",
-      "Faire griller sous le gril du four ou à la plancha 3-4 min de chaque côté.",
-      "Couper les tomates en tranches, assaisonner.",
-      "Servir les sardines avec un filet de citron, les tomates et du pain."
-    ]
-  },
-  {
     id: 34,
     nom: "Brandade de morue",
     categorie: "plat",
@@ -3088,7 +3066,294 @@ const RECIPES = [
       "Verser dans une poêle et cuire 5 min de chaque côté.",
       "Servir en parts avec une salade verte."
     ]
+  },
+
+  // =====================
+  // RECETTES INTERNATIONALES
+  // =====================
+
+  // Pad thaï au poulet
+  {
+    id: 126,
+    nom: "Pad thaï au poulet",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 25,
+    tags: ["rapide", "copieux"],
+    ingredients: [
+      { nom: "Nouilles de riz", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Cuisses de poulet", quantite: 150, unite: "g", rayon: "viandes" },
+      { nom: "Oeufs", quantite: 1, unite: "pièce", rayon: "produits-laitiers" },
+      { nom: "Sauce soja", quantite: 20, unite: "ml", rayon: "epicerie" },
+      { nom: "Sauce nuoc mam", quantite: 15, unite: "ml", rayon: "epicerie" },
+      { nom: "Cacahuètes", quantite: 30, unite: "g", rayon: "epicerie" },
+      { nom: "Poivrons", quantite: 75, unite: "g", rayon: "fruits-legumes" }
+    ],
+    etapes: [
+      "Faire cuire les nouilles selon les instructions.",
+      "Couper le poulet en lanières fines.",
+      "Faire chauffer un peu d'huile dans une poêle ou wok.",
+      "Faire cuire le poulet 5-6 min jusqu'à ce qu'il soit doré.",
+      "Ajouter les poivrons coupés et cuire 2-3 min.",
+      "Ajouter les nouilles égouttées, la sauce soja et la sauce nuoc mam.",
+      "Casser l'oeuf au centre et le mélanger rapidement.",
+      "Parsemer de cacahuètes concassées et servir."
+    ]
+  },
+
+  // Burrito mexicain
+  {
+    id: 127,
+    nom: "Burrito mexicain",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 20,
+    tags: ["rapide", "copieux"],
+    ingredients: [
+      { nom: "Tortillas de blé", quantite: 2, unite: "pièce", rayon: "epicerie" },
+      { nom: "Riz basmati", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Steak haché", quantite: 150, unite: "g", rayon: "viandes" },
+      { nom: "Haricots rouges", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Fromage râpé", quantite: 40, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Avocat", quantite: 0.5, unite: "pièce", rayon: "fruits-legumes" },
+      { nom: "Salsa", quantite: 40, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Cuire le riz selon les instructions.",
+      "Faire cuire le steak haché dans une poêle.",
+      "Chauffer légèrement les tortillas à la poêle.",
+      "Étaler la salsa sur les tortillas.",
+      "Garnir de riz, steak haché, haricots rouges, fromage râpé.",
+      "Ajouter l'avocat en lamelles.",
+      "Rouler en serrant les bords."
+    ]
+  },
+
+  // Curry de lentilles indien
+  {
+    id: 128,
+    nom: "Curry de lentilles indien",
+    categorie: "plat",
+    budget: 1,
+    tempsPreparation: 30,
+    tags: ["vegetarien", "copieux"],
+    ingredients: [
+      { nom: "Lentilles corail", quantite: 100, unite: "g", rayon: "epicerie" },
+      { nom: "Lait de coco", quantite: 200, unite: "ml", rayon: "epicerie" },
+      { nom: "Oignons", quantite: 75, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Curry", quantite: 8, unite: "g", rayon: "epicerie" },
+      { nom: "Gingembre", quantite: 5, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Ail", quantite: 2, unite: "gousses", rayon: "fruits-legumes" },
+      { nom: "Riz basmati", quantite: 80, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire cuire le riz selon les instructions.",
+      "Faire revenir l'oignon émincé dans une cocotte.",
+      "Ajouter l'ail et le gingembre écrasés, cuire 1 min.",
+      "Ajouter les lentilles corail, le curry et le lait de coco.",
+      "Assaisonner, couvrir et laisser mijoter 20-25 min.",
+      "Servir avec le riz et accompagner de naan ou de riz."
+    ]
+  },
+
+  // Risotto milanais
+  {
+    id: 129,
+    nom: "Risotto milanais",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 40,
+    tags: ["copieux"],
+    ingredients: [
+      { nom: "Riz arborio", quantite: 80, unite: "g", rayon: "epicerie" },
+      { nom: "Bouillon de légumes", quantite: 500, unite: "ml", rayon: "epicerie" },
+      { nom: "Oignons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Vin blanc", quantite: 50, unite: "ml", rayon: "epicerie" },
+      { nom: "Parmesan", quantite: 30, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Beurre", quantite: 20, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Safran", quantite: 0.1, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire chauffer le bouillon dans une casserole séparée.",
+      "Faire suer l'oignon émincé dans une cocotte avec un peu d'huile.",
+      "Ajouter le riz et le faire nacrer 2-3 min.",
+      "Déglacer avec le vin blanc et laisser évaporer.",
+      "Ajouter une louche de bouillon chaud, remuer constamment.",
+      "Répéter l'opération jusqu'à absorption complète du bouillon (environ 15-20 min).",
+      "Hors du feu, ajouter le beurre, le parmesan râpé et le safran.",
+      "Laisser reposer 2-3 min avant de servir."
+    ]
+  },
+
+  // Tacos au boeuf
+  {
+    id: 130,
+    nom: "Tacos au boeuf",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 20,
+    tags: ["rapide", "copieux"],
+    ingredients: [
+      { nom: "Tortillas de maïs", quantite: 4, unite: "pièce", rayon: "epicerie" },
+      { nom: "Boeuf haché", quantite: 150, unite: "g", rayon: "viandes" },
+      { nom: "Fromage râpé", quantite: 40, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Laitue", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Tomates", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Oignons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Guacamole", quantite: 40, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire chauffer les tortillas au micro-ondes ou à la poêle.",
+      "Faire cuire le boeuf haché avec un peu d'épices mexicaines.",
+      "Couper les tomates, oignons et laitue en petits morceaux.",
+      "Garnir les tortillas de boeuf, légumes et fromage.",
+      "Ajouter la guacamole et rouler."
+    ]
+  },
+
+  // Burger maison
+  {
+    id: 131,
+    nom: "Burger maison",
+    categorie: "plat",
+    budget: 2,
+    tempsPreparation: 30,
+    tags: ["copieux", "rapide"],
+    ingredients: [
+      { nom: "Pain à burger", quantite: 2, unite: "pièce", rayon: "boulangerie" },
+      { nom: "Steak haché", quantite: 150, unite: "g", rayon: "viandes" },
+      { nom: "Fromage râpé", quantite: 40, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Salade verte", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Tomates", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Oignons", quantite: 50, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Cornichons", quantite: 50, unite: "g", rayon: "epicerie" },
+      { nom: "Mayonnaise", quantite: 30, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Faire cuire le steak haché à la poêle ou au grill selon ton goût.",
+      "Griller légèrement les pains à burger.",
+      "Couper les tomates en rondelles et émincer les oignons.",
+      "Sur la base du burger, étaler la mayonnaise.",
+      "Ajouter la salade, le steak, le fromage, les tomates, oignons et cornichons.",
+      "Terminer avec le chapeau du burger."
+    ]
+  },
+
+  // =====================
+  // DESSERTS (5)
+  // =====================
+  {
+    id: 95,
+    nom: "Crème caramel",
+    categorie: "dessert",
+    budget: 1,
+    tempsPreparation: 45,
+    tags: ["sucre", "rapide"],
+    ingredients: [
+      { nom: "Lait", quantite: 250, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Oeufs", quantite: 2, unite: "pieces", rayon: "produits-laitiers" },
+      { nom: "Sucre", quantite: 50, unite: "g", rayon: "epicerie" },
+      { nom: "Sucre vanillé", quantite: 1, unite: "sachet", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Préchauffer le four à 160°C.",
+      "Faire un caramel avec 20g de sucre et un peu d'eau dans des ramequins.",
+      "Dans un bol, battre les oeufs avec le reste de sucre et le sucre vanillé.",
+      "Faire chauffer le lait presque à ébullition et l'ajouter aux oeufs en fouettant.",
+      "Verser la préparation dans les ramequins et cuire au bain-marie 30 minutes.",
+      "Laisser refroidir et réserver au frais avant de démouler."
+    ]
+  },
+  {
+    id: 96,
+    nom: "Compote de pommes maison",
+    categorie: "dessert",
+    budget: 1,
+    tempsPreparation: 25,
+    tags: ["sucre", "leger", "rapide"],
+    ingredients: [
+      { nom: "Pommes", quantite: 300, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Eau", quantite: 50, unite: "ml", rayon: "epicerie" },
+      { nom: "Sucre", quantite: 20, unite: "g", rayon: "epicerie" },
+      { nom: "Cannelle", quantite: 1, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Peler et couper les pommes en morceaux.",
+      "Mettre les pommes dans une casserole avec l'eau et le sucre.",
+      "Ajouter la cannelle et cuire 20 minutes à feu doux.",
+      "Mixer partiellement ou laisser en morceaux selon la texture souhaitée.",
+      "Laisser refroidir avant de servir."
+    ]
+  },
+  {
+    id: 97,
+    nom: "Yaourt aux fruits frais",
+    categorie: "dessert",
+    budget: 1,
+    tempsPreparation: 10,
+    tags: ["sucre", "leger", "rapide"],
+    ingredients: [
+      { nom: "Yaourt nature", quantite: 125, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Fruits de saison", quantite: 100, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Miel", quantite: 10, unite: "g", rayon: "epicerie" },
+      { nom: "Muesli", quantite: 20, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Laver et couper les fruits en petits morceaux.",
+      "Mettre le yaourt dans un bol ou un verre.",
+      "Ajouter les fruits coupés par-dessus.",
+      "Arroser de miel et saupoudrer de muesli.",
+      "Servir frais."
+    ]
+  },
+  {
+    id: 98,
+    nom: "Pommes au four",
+    categorie: "dessert",
+    budget: 1,
+    tempsPreparation: 40,
+    tags: ["sucre", "leger"],
+    ingredients: [
+      { nom: "Pommes", quantite: 200, unite: "g", rayon: "fruits-legumes" },
+      { nom: "Beurre", quantite: 10, unite: "g", rayon: "produits-laitiers" },
+      { nom: "Sucre", quantite: 15, unite: "g", rayon: "epicerie" },
+      { nom: "Cannelle", quantite: 1, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Préchauffer le four à 180°C.",
+      "Couper les pommes en quartiers et ôter les pépins.",
+      "Disposer les quartiers dans un plat à four.",
+      "Parsemer de sucre, de cannelle et déposer des morceaux de beurre.",
+      "Cuire 30 minutes jusqu'à ce que les pommes soient tendres.",
+      "Servir tiède ou froid."
+    ]
+  },
+  {
+    id: 99,
+    nom: "Flan pâtissier",
+    categorie: "dessert",
+    budget: 2,
+    tempsPreparation: 50,
+    tags: ["sucre", "copieux"],
+    ingredients: [
+      { nom: "Pâte brisée", quantite: 1, unite: "pâte", rayon: "epicerie" },
+      { nom: "Lait", quantite: 300, unite: "ml", rayon: "produits-laitiers" },
+      { nom: "Oeufs", quantite: 2, unite: "pieces", rayon: "produits-laitiers" },
+      { nom: "Sucre", quantite: 60, unite: "g", rayon: "epicerie" },
+      { nom: "Maïzena", quantite: 20, unite: "g", rayon: "epicerie" }
+    ],
+    etapes: [
+      "Préchauffer le four à 180°C.",
+      "Foncer un moule avec la pâte brisée et piquer le fond.",
+      "Faire cuire à blanc 10 minutes avec des billes de cuisson.",
+      "Dans une casserole, chauffer le lait avec la moitié du sucre.",
+      "Dans un bol, battre les oeufs avec le reste du sucre et la maïzena.",
+      "Verser le lait chaud sur les oeufs en fouettant, reverser dans la casserole.",
+      "Faire épaissir 2-3 minutes à feu doux sans bouillir.",
+      "Verser la crème dans le fond de tarte précuit et enfourner 25 minutes."
+    ]
   }
+
 ];
 
 // Liste de tous les ingrédients possibles (pour les exclusions)
@@ -3204,7 +3469,6 @@ const PRIX_INGREDIENTS = {
   // Poissonnerie
   "Pavé de saumon": { prixBase: 20.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
   "Filet de cabillaud": { prixBase: 16.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
-  "Sardines fraîches": { prixBase: 8.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
   "Morue dessalée": { prixBase: 15.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
   "Crevettes": { prixBase: 18.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
   "Filet de truite": { prixBase: 14.00, uniteBase: "kg", qteParUnite: 1000, uniteRecette: "g" },
